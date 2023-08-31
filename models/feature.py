@@ -7,7 +7,7 @@ from sqlalchemy import Column, String, ForeignKey, JSON
 from sqlalchemy.orm import relationship
 
 
-class Features(Mobile, Base):
+class Feature(Mobile, Base):
     """
     Docstring: Subclass of Mobile. This class maps to the 'model' table.
     Attributes:

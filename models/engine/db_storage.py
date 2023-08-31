@@ -1,46 +1,28 @@
-import urllib
-from os import getenv
+#!/usr/bin/env python3
+"""module for the DBStorage class"""
 
+from os import getenv
 from models.base import Base
 from models.model import Model
 from models.brand import Brand
-from models.features import Features
+from models.feature import Feature
 from models.secondary_features import Secondary
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-
-
-usr = "root"
-pswd = "Remisql@91"
-db = "fg_db"
-host = "localhost"
-
-pd_encd = urllib.parse.quote_plus(pswd)
-engine = create_engine(
-    "mysql+mysqldb://{}:{}@{}/{}".format(usr, pd_encd, host, db),
-    pool_pre_ping=False,
-    echo=False,
-)
-engine.connect()
 
 clx = {
     "Model": Model,
     "Brand": Brand,
-    "Features": Features,
-    "Secondary": Secondary,
-}
-
-Session = sessionmaker(bind=engine)
+    "Features": Feature,
+    "Secondary": Secondary
+    }
 
 
 class DBStorage:
     """interaacts with the MySQL database"""
 
     __engine = None
-
-    __session = Session()
-    obj_inst = {}
+    __session = None
 
     def __init__(self):
         """Instantiate a DBStorage object"""
@@ -51,10 +33,7 @@ class DBStorage:
         self.__engine = create_engine(
             "mysql+mysqldb://{}:{}@{}/{}".format(
                 HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST, HBNB_MYSQL_DB
-            ),
-            pool_pre_ping=False,
-            echo=False,
-        )
+            ))
 
     def all(self, cls=None):
         """query on the current database session"""
@@ -95,6 +74,9 @@ class DBStorage:
 
     def get(self, cls, id):
         """returns the object based on the class name and id"""
+        if cls not in clx:
+            return None
+
         if cls and id:
             key_name = "{}.{}".format(cls.__name__, id)
             return self.all(cls).get(key_name)
