@@ -1,10 +1,13 @@
+#!/usr/bin/env python3
+"""This the base template for all model object instances."""
+
 from models.base import Mobile, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 
 class Model(Mobile, Base):
-    """Subclass of Mobile. This class maps to the 'mobiles' table."""
+    """Model class"""
 
     __tablename__ = "models"
     model_name = Column(String(32), nullable=False)
