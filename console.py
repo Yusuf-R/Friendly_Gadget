@@ -69,9 +69,10 @@ class FgCmd(cmd.Cmd):
             obj.brand_name = data
             obj.save()
             print(
-                "Brand {} created successfully\n{}\n".
-                format(obj.brand_name, obj.id)
+                "Brand {} created successfully\n{}\n".format(
+                    obj.brand_name, obj.id
                 )
+            )
         return
 
     def do_create_models(self, argz):
@@ -98,8 +99,9 @@ class FgCmd(cmd.Cmd):
         obj.brand_id = brand_id
         obj.save()
         print(
-            "Model {} created successfully\n{}\n".
-            format(obj.model_name, obj.id)
+            "Model {} created successfully\n{}\n".format(
+                obj.model_name, obj.id
+            )
         )
         return
 
@@ -144,8 +146,11 @@ class FgCmd(cmd.Cmd):
                     secondary_entry.inner_key = sec_key
                     secondary_entry.inner_value = sec_val
                     secondary_entry.save()
-        print("Secondary obj created successfully\n{}\n".
-              format(secondary_entry.id))
+        print(
+            "Secondary obj created successfully\n{}\n".format(
+                secondary_entry.id
+            )
+        )
         return
 
     def do_show(self, argz):
@@ -177,7 +182,6 @@ class FgCmd(cmd.Cmd):
         obj = storage.get(FgCmd.__clx[clx], id)
         print(obj.to_dict())
 
-
     def do_delete(self, argz):
         """Delete content from the database"""
         usage = "Usage: delete <class> <id>"
@@ -207,7 +211,6 @@ class FgCmd(cmd.Cmd):
         storage.save()
         print("Object deleted successfully")
         return
-
 
     def do_all(self, argz):
         """Prints all string representation of all instances"""
@@ -319,13 +322,6 @@ class FgCmd(cmd.Cmd):
             print("Secondary object updated successfully")
             return
         # get the object
-        if clx not in FgCmd.__clx:
-            print(
-                "Error: Invalid class name\n{}\nPlease check the class name".format(
-                    usage
-                )
-            )
-            return
         obj = storage.get(FgCmd.__clx[clx], id)
         # set the attribute
         if clx == "Brand":
@@ -346,7 +342,6 @@ class FgCmd(cmd.Cmd):
             else:
                 print("Error: Invalid attribute\n{}".format(usage))
                 return
-
 
 
 if __name__ == "__main__":
