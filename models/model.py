@@ -13,5 +13,5 @@ class Model(Mobile, Base):
     model_name = Column(String(32), nullable=False)
     brand_id = Column(String(60), ForeignKey("brands.id"), nullable=False)
     features = relationship(
-        "Features", backref="models", cascade="all, delete, delete-orphan"
+        "Feature", backref="models", cascade="all, delete, delete-orphan"
     )
