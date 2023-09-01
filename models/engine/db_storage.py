@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """module for the DBStorage class"""
 
-from os import POSIX_SPAWN_DUP2, getenv
 from models.base import Base
 from models.model import Model
 from models.brand import Brand
