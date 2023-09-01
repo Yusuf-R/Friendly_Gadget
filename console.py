@@ -7,7 +7,7 @@ import shlex
 from models.brand import Brand
 from models.model import Model
 from models.feature import Feature
-from models.secondary_features import Secondary
+from models.secondary_feature import Secondary
 from models import storage
 
 
