@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
 """module for the DBStorage class"""
 
-from os import getenv
+from os import POSIX_SPAWN_DUP2, getenv
 from models.base import Base
 from models.model import Model
 from models.brand import Brand
 from models.feature import Feature
-from models.secondary_features import Secondary
+from models.secondary_feature import Secondary
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+
 
 clx = {
     "Model": Model,
     "Brand": Brand,
     "Features": Feature,
-    "Secondary": Secondary
-    }
+    "Secondary": Secondary,
+}
 
 
 class DBStorage:
@@ -23,17 +24,26 @@ class DBStorage:
 
     __engine = None
     __session = None
+    __usr = "fg_dev"
+    __pswd = "fg_dev_pwd"
+    __db = "fg_db"
+    __host = "localhost"
 
     def __init__(self):
         """Instantiate a DBStorage object"""
-        HBNB_MYSQL_USER = getenv("HBNB_MYSQL_USER")
-        HBNB_MYSQL_PWD = getenv("HBNB_MYSQL_PWD")
-        HBNB_MYSQL_HOST = getenv("HBNB_MYSQL_HOST")
-        HBNB_MYSQL_DB = getenv("HBNB_MYSQL_DB")
         self.__engine = create_engine(
             "mysql+mysqldb://{}:{}@{}/{}".format(
-                HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST, HBNB_MYSQL_DB
-            ))
+                DBStorage.__usr,
+                DBStorage.__pswd,
+                DBStorage.__host,
+                DBStorage.__db,
+            ),
+            pool_pre_ping=False,
+            echo=False,
+        )
+        self.__engine.connect()
+        Session = sessionmaker(bind=self.__engine)
+        self.__session = Session()
 
     def all(self, cls=None):
         """query on the current database session"""
@@ -74,9 +84,6 @@ class DBStorage:
 
     def get(self, cls, id):
         """returns the object based on the class name and id"""
-        if cls not in clx:
-            return None
-
         if cls and id:
             key_name = "{}.{}".format(cls.__name__, id)
             return self.all(cls).get(key_name)
