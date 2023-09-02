@@ -47,13 +47,13 @@ class Mobile:
 
     def save(self):
         """Save object instance to database"""
-        from models.engine.db_storage import DBStorage
+        from models import storage
 
-        DBStorage().new(self)
-        DBStorage().save()
+        storage.new(self)
+        storage.save()
 
     def delete(self):
         """delete the current instance from the storage"""
-        from models.engine.db_storage import DBStorage
+        from models import storage
 
-        DBStorage().delete(self)
+        storage.delete(self)
