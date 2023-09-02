@@ -13,7 +13,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 clx = {
     "Model": Model,
     "Brand": Brand,
-    "Features": Feature,
+    "Feature": Feature,
     "Secondary": Secondary,
 }
 
@@ -40,9 +40,6 @@ class DBStorage:
             pool_pre_ping=False,
             echo=False,
         )
-        self.__engine.connect()
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
 
     def all(self, cls=None):
         """query on the current database session"""
@@ -79,7 +76,7 @@ class DBStorage:
             bind=self.__engine, expire_on_commit=False
         )
         Session = scoped_session(session_factory)
-        self.__session = Session()
+        self.__session = Session
 
     def get(self, cls, id):
         """returns the object based on the class name and id"""
