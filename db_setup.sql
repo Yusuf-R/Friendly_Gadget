@@ -3,7 +3,7 @@
 -- create the development database if it doesn't already exist
  DROP DATABASE IF EXISTS `fg_db`;
  CREATE DATABASE IF NOT EXISTS `fg_db`;
- USE `fg_db`;
+-- USE `fg_db`;
 
 -- reduce pasword policy to low
 SET GLOBAL validate_password.policy=LOW;
@@ -18,4 +18,3 @@ GRANT ALL PRIVILEGES ON fg_db.* TO 'fg_dev'@'localhost';
 GRANT SELECT ON performance_schema.* TO 'fg_dev'@'localhost';
 
 FLUSH PRIVILEGES;
-
