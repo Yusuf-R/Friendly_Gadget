@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Management console for the Friendly Gadget project"""
 
+import ast
 import cmd
 import json
 import shlex
@@ -53,26 +54,65 @@ class FgCmd(cmd.Cmd):
         """quit documentation"""
         print("Syntax: quit")
         print("Terminates and exit the program")
+        return
 
     """Important Management functions"""
 
     def do_create_brand(self, argz):
         """Creates a new instance of a class"""
-        usage = "Usage: create_brand <brand_name>"
-        argz = argz.strip("\"'").split()
-        if len(argz) == 0:
-            print("Error: Name of brand cannot be empty\n{}".format(usage))
+        usage = "Usage: <brand_name>"
+        hint = "argument must be a string or a list of strings"
+        list_hint = ["[", "]"]
+        dict_hint = ["{", "}"]
+        # check if argumments is empty
+        if argz is None or argz == "":
+            print("Error: Brand name cannot be empty\n{}".format(usage))
             return
-        for data in argz:
-            data = data.strip("\"'")
+        # check if a list was passed as argument
+        if argz[0] in list_hint:
+            data = argz.strip("[]")
+            data = "[" + data + "]"
+            lst_data = ast.literal_eval(data)
+            if not isinstance(lst_data, list):
+                print("Error: Invalid data type\n{}\n{}".format(usage, hint))
+                return
+            for brand in lst_data:
+                obj = Brand()
+                obj.brand_name = brand
+                obj.save()
+                print(
+                    "Brand {} created successfully\n{}\n".format(
+                        obj.brand_name, obj.id
+                    )
+                )
+            return
+        if argz[0] in dict_hint:
+            print("We got a dictionary\n{}".format(hint))
+            return
+        # check if a string was passed in quotes
+        if argz[0] in ["'", '"']:
+            str_data = argz.strip(" ")
+            for brand in str_data:
+                obj = Brand()
+                obj.brand_name = brand
+                obj.save()
+                print(
+                    "Brand {} created successfully\n{}\n".format(
+                        obj.brand_name, obj.id
+                    )
+                )
+            return
+        # single string without quotes
+        if argz[0].isalpha():
             obj = Brand()
-            obj.brand_name = data
+            obj.brand_name = argz
             obj.save()
             print(
                 "Brand {} created successfully\n{}\n".format(
                     obj.brand_name, obj.id
                 )
             )
+            return
         return
 
     def do_create_models(self, argz):
