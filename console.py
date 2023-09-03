@@ -4,6 +4,7 @@
 import ast
 import cmd
 import json
+import re
 import shlex
 from models.brand import Brand
 from models.model import Model
@@ -60,59 +61,125 @@ class FgCmd(cmd.Cmd):
 
     def do_create_brand(self, argz):
         """Creates a new instance of a class"""
-        usage = "Usage: <brand_name>"
+        usage = "Usage: create_brand <brand_name>"
         hint = "argument must be a string or a list of strings"
         list_hint = ["[", "]"]
-        dict_hint = ["{", "}"]
+        dict_hint = ["{", '}']
         # check if argumments is empty
         if argz is None or argz == "":
             print("Error: Brand name cannot be empty\n{}".format(usage))
             return
         # check if a list was passed as argument
         if argz[0] in list_hint:
-            data = argz.strip("[]")
-            data = "[" + data + "]"
-            lst_data = ast.literal_eval(data)
-            if not isinstance(lst_data, list):
-                print("Error: Invalid data type\n{}\n{}".format(usage, hint))
+            try:
+                data = ast.literal_eval(argz)
+                # clean the data for any inconsistency
+                clean_data = []
+                for brand in data:
+                    clean_brand = re.sub(" +", " ", brand).strip()
+                    clean_data.append(clean_brand)
+                # check if brand name already exists
+                for brand in clean_data:
+                    if check_brand_name(brand):
+                        print("Error: Brand name: {} already exists\n{}"
+                              .format(brand, usage))
+                        continue
+                    # create a new brand
+                    obj = Brand()
+                    obj.brand_name = brand
+                    obj.save()
+                    print("Brand: {} created successfully\n{}\n"
+                          .format(obj.brand_name, obj.id))
                 return
-            for brand in lst_data:
-                obj = Brand()
-                obj.brand_name = brand
-                obj.save()
-                print(
-                    "Brand {} created successfully\n{}\n".format(
-                        obj.brand_name, obj.id
-                    )
-                )
-            return
+            except Exception:
+                print("Argument is erronously inconsistent\n{}".format(hint))
+                return
+        # check if string is surrounded by braces
         if argz[0] in dict_hint:
             print("We got a dictionary\n{}".format(hint))
             return
         # check if a string was passed in quotes
         if argz[0] in ["'", '"']:
-            str_data = argz.strip(" ")
-            for brand in str_data:
+            # ensuring only comma and space separated string
+            if "," in argz and " " in argz:
+                argz_synthesis = argz.replace(",", " ").split(" ")
+                for brand in argz_synthesis:
+                    if brand in ["'", '"', ""] or brand == "":
+                        continue
+                    brand = brand.strip("\"'")
+                    if check_brand_name(brand):
+                        print("Error: Brand name: {} already exists\n{}"
+                              .format(brand, hint))
+                        continue
+                    obj = Brand()
+                    obj.brand_name = brand
+                    obj.save()
+                    print("Brand {} created successfully\n{}\n"
+                          .format(obj.brand_name, obj.id))
+                return
+            # ensuring only comma separated strings
+            elif "," in argz and " " not in argz:
+                argz_synthesis = argz.replace(",", " ").split(" ")
+                for brand in argz_synthesis:
+                    brand = brand.strip("\"'")
+                    if check_brand_name(brand):
+                        print("Error: Brand name: {} already exists\n{}"
+                              .format(brand, usage))
+                        continue
+                    obj = Brand()
+                    obj.brand_name = brand
+                    obj.save()
+                    print("Brand {} created successfully\n{}\n"
+                          .format(obj.brand_name, obj.id))
+                return
+            # ensuring only spaces separated strings
+            elif " " in argz and "," not in argz:
+                argz_synthesis = argz.split(" ")
+                for brand in argz_synthesis:
+                    brand = brand.strip("\"'")
+                    if brand == "":
+                        continue
+                    if check_brand_name(brand):
+                        print("Error: Brand name: {} already exists\n{}"
+                              .format(brand, usage))
+                        continue
+                    obj = Brand()
+                    obj.brand_name = brand
+                    obj.save()
+                    print("Brand {} created successfully\n{}\n"
+                          .format(obj.brand_name, obj.id))
+                return
+            # string should defintely just be a string
+            else:
+                argz = argz.strip("\"'")
+                if check_brand_name(argz):
+                    print("Error: Brand name: {} already exists\n{}"
+                          .format(argz, usage))
+                    return
+                obj = Brand()
+                obj.brand_name = argz
+                obj.save()
+                print("Brand {} created successfully\n{}\n"
+                      .format(obj.brand_name, obj.id))
+                return
+
+        # single string without quotes
+        if argz[0].isalpha():
+            data = re.split(r'[,\s]+', argz.strip())
+            for brand in data:
+                if brand == "":
+                    continue
+                if check_brand_name(brand):
+                    print("Error: Brand name: {} already exists\n{}"
+                          .format(brand, usage))
+                    continue
                 obj = Brand()
                 obj.brand_name = brand
                 obj.save()
-                print(
-                    "Brand {} created successfully\n{}\n".format(
-                        obj.brand_name, obj.id
-                    )
-                )
+                print("Brand {} created successfully\n{}\n".
+                      format(obj.brand_name, obj.id))
             return
-        # single string without quotes
-        if argz[0].isalpha():
-            obj = Brand()
-            obj.brand_name = argz
-            obj.save()
-            print(
-                "Brand {} created successfully\n{}\n".format(
-                    obj.brand_name, obj.id
-                )
-            )
-            return
+        print("Error: Erronous data entry\n{}\n{}".format(usage, hint))
         return
 
     def do_create_models(self, argz):
@@ -133,6 +200,11 @@ class FgCmd(cmd.Cmd):
         # validate brand_id
         if storage.get(Brand, brand_id) is None:
             print("Error: Invalid brand id")
+            return
+        # validate if model_name already exists
+        if check_model_name(model_name):
+            print("Error: Model name: {} already exists\n{}"
+                  .format(model_name, usage))
             return
         obj = Model()
         obj.model_name = model_name
@@ -382,6 +454,34 @@ class FgCmd(cmd.Cmd):
             else:
                 print("Error: Invalid attribute\n{}".format(usage))
                 return
+
+
+def check_brand_name(name):
+    """
+    This function will helpe check if
+    a band_name already exist in the database
+    """
+    all_obj = storage.all()
+    for obj in all_obj.values():
+        if obj.brand_name == name:
+            return True
+        else:
+            continue
+    return False
+
+
+def check_model_name(name):
+    """
+    This function will helpe check if
+    a model_name already exist in the database
+    """
+    all_obj = storage.all()
+    for obj in all_obj.values():
+        if obj.model_name == name:
+            return True
+        else:
+            continue
+    return False
 
 
 if __name__ == "__main__":
