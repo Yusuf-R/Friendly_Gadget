@@ -182,7 +182,7 @@ class FgCmd(cmd.Cmd):
         print("Error: Erronous data entry\n{}\n{}".format(usage, hint))
         return
 
-    def do_create_models(self, argz):
+    def do_create_model(self, argz):
         """Creates a new instance of a class"""
         usage = "Usage: create_model <obj_name> <brand_id>"
         argz = argz.strip("\"'").split()
@@ -217,29 +217,34 @@ class FgCmd(cmd.Cmd):
         )
         return
 
-    def do_create_features(self, argz):
+    def do_create_feature(self, argz):
         """Create a feautre for a given phone model"""
         usage = "Usage: <model_id> {<feature_key>: <feature_value>}"
-
-        # Split the data into ID and dictionary portion
-        id, dict_ = argz.split(" ", 1)
-        # Remove any extra spaces and newlines from the dictionary portion
-        dict_ = dict_.strip()
-        if id is None:
-            print("Error: Model id required\n{}".format(usage))
+        # check if argumments is empty
+        if argz is None or argz == "":
+            print("Error: Data stream is required\n{}".format(usage))
             return
-        if dict_ is None:
-            print("Error: Feature data required\n{}".format(usage))
+        # check if id was print
+        data = argz.strip("'\"").split(" ", 1)
+        if len(data) == 1:
+            print("Error: Feature attributes is required\n{}".format(usage))
             return
+        id = data[0]
+        dict_ = data[1]
         # Validate model_id
         if storage.get(Model, id) is None:
             print("Error: Invalid model id")
             return
         # Convert the dictionary portion into a dictionary
-        dict_ = eval(dict_)
+        try:
+            dict_ = eval(dict_)
         # validate dictonary
+        except Exception:
+            print("Here: Error: Feature data must be a dictionary\n{}".format(usage))
+            return
+
         if not isinstance(dict_, dict):
-            print("Error: Feature data must be a dictionary\n{}".format(usage))
+            print("HAAAHHHA: Error: Feature data must be a dictionary\n{}".format(usage))
             return
         # Create a new instance of Features
         obj = Feature()
@@ -248,22 +253,22 @@ class FgCmd(cmd.Cmd):
             setattr(obj, key, val)
         obj.save()
         print("Feature obj created successfully\n{}\n".format(obj.id))
-
-        # we also instantiate the secondary features
-        for _, val in dict_.items():
-            if isinstance(val, dict):
-                for sec_key, sec_val in val.items():
-                    secondary_entry = Secondary()
-                    secondary_entry.feature_id = obj.id
-                    secondary_entry.inner_key = sec_key
-                    secondary_entry.inner_value = sec_val
-                    secondary_entry.save()
-        print(
-            "Secondary obj created successfully\n{}\n".format(
-                secondary_entry.id
-            )
-        )
-        return
+        try:
+            # we also instantiate the secondary features
+            for _, val in dict_.items():
+                if isinstance(val, dict):
+                    for sec_key, sec_val in val.items():
+                        secondary_entry = Secondary()
+                        secondary_entry.feature_id = obj.id
+                        secondary_entry.inner_key = sec_key
+                        secondary_entry.inner_value = sec_val
+                        secondary_entry.save()
+                        print("Secondary obj created successfully\n{}\n"
+                              .format(secondary_entry.id))
+            return
+        except Exception:
+            print("BANGA Error: Feature data must be a dictionary of dictionary\n{}"
+                  .format(usage))
 
     def do_show(self, argz):
         """
@@ -293,6 +298,17 @@ class FgCmd(cmd.Cmd):
             return
         obj = storage.get(FgCmd.__clx[clx], id)
         print(obj.to_dict())
+
+    def help_show(self):
+        """
+        This will print out the dictionary of the all the attributes
+        of a given class and it's id
+        show documentation
+        """
+        usage = "show Brand f0ca205f-31dc-40e4-ac82-09a83d75bcaa"
+        print("show <class> <id>")
+        print("id is the id of the obj\nExample: {}".format(usage))
+        return
 
     def do_delete(self, argz):
         """Delete content from the database"""
@@ -365,6 +381,10 @@ class FgCmd(cmd.Cmd):
         if len(tokens) == 2:
             print("Error: Missing attribute\n{}".format(usage))
             return
+        if len(tokens) == 3:
+            print("Error: Missing value\n{}".format(usage))
+            return    
+
         clx = tokens[0]
         id = tokens[1]
         attr = tokens[2]
@@ -435,6 +455,7 @@ class FgCmd(cmd.Cmd):
             return
         # get the object
         obj = storage.get(FgCmd.__clx[clx], id)
+        val = val.strip("\"'")
         # set the attribute
         if clx == "Brand":
             if attr == "brand_name":
@@ -446,7 +467,7 @@ class FgCmd(cmd.Cmd):
                 print("Error: Invalid attribute\n{}".format(usage))
                 return
         if clx == "Model":
-            if attr == "model_name":
+            if attr == "model_name" or attr == "model_img":
                 setattr(obj, attr, val)
                 storage.save()
                 print("{} Object updated successfully".format(clx))
@@ -455,13 +476,78 @@ class FgCmd(cmd.Cmd):
                 print("Error: Invalid attribute\n{}".format(usage))
                 return
 
+    def do_all_specific(self, argz):
+        """
+        This will query the db and return all the child obj
+        for a given parent id
+        """
+        usage = "Usage: all_specific <child class> <Parent-id>"
+        tokens = shlex.split(argz)
+        if len(tokens) == 0:
+            print("Error: Missing class name\n{}".format(usage))
+            return
+        if len(tokens) == 1:
+            print("Error: Missing object id\n{}".format(usage))
+            return
+        clx = tokens[0]
+        id = tokens[1]
+        # validate class name
+        if clx not in FgCmd.__clx:
+            print("Error: Invalid class name")
+            return
+        if FgCmd.__clx[clx] == Brand:
+            print("This operation is forbidden for this class\n{}"
+                  .format(usage))
+            return
+        if FgCmd.__clx[clx] == Model:
+            # validate the id against Brand
+            if storage.get(Brand, id) is None:
+                print("Error: Invalid id for the class Brand")
+                return
+            FgCmd.action_specific(clx, id)
+            return
+        elif FgCmd.__clx[clx] == Feature:
+            # valideate the id agains Model
+            if storage.get(Model, id) is None:
+                print("Error: Invalid id for the class Model")
+                return
+            FgCmd.action_specific(clx, id)
+            return
+        elif FgCmd.__clx[clx] == Secondary:
+            # validate the id agains Feature
+            if storage.get(Feature, id) is None:
+                print("Error: Invalid id for the class Feature")
+                return
+            FgCmd.action_specific(clx, id)
+            return
+        return
+
+    @staticmethod
+    def action_specific(clx, id):
+        obj_list = []
+        data = storage.all(FgCmd.__clx[clx]).values()
+        if data is None:
+            print("No objects found")
+            return
+        for obj in data:
+            obj_dict = obj.to_dict()
+            if obj_dict["brand_id"] == id:
+                obj_list.append(obj_dict)
+            else:
+                continue
+            for disp in obj_list:
+                print(disp)
+                # print()
+            obj_list = []
+        return
+
 
 def check_brand_name(name):
     """
     This function will helpe check if
     a band_name already exist in the database
     """
-    all_obj = storage.all()
+    all_obj = storage.all(Brand)
     for obj in all_obj.values():
         if obj.brand_name == name:
             return True
@@ -475,7 +561,7 @@ def check_model_name(name):
     This function will helpe check if
     a model_name already exist in the database
     """
-    all_obj = storage.all()
+    all_obj = storage.all(Model)
     for obj in all_obj.values():
         if obj.model_name == name:
             return True
