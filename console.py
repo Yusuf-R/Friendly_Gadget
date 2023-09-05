@@ -240,11 +240,11 @@ class FgCmd(cmd.Cmd):
             dict_ = eval(dict_)
         # validate dictonary
         except Exception:
-            print("Here: Error: Feature data must be a dictionary\n{}".format(usage))
+            print("Error: Feature data must be a dictionary\n{}".format(usage))
             return
 
         if not isinstance(dict_, dict):
-            print("HAAAHHHA: Error: Feature data must be a dictionary\n{}".format(usage))
+            print("Error: Feature data must be a dictionary\n{}".format(usage))
             return
         # Create a new instance of Features
         obj = Feature()
@@ -267,7 +267,7 @@ class FgCmd(cmd.Cmd):
                               .format(secondary_entry.id))
             return
         except Exception:
-            print("BANGA Error: Feature data must be a dictionary of dictionary\n{}"
+            print("Error: Feature data must be a dictionary of dictionary\n{}"
                   .format(usage))
 
     def do_show(self, argz):
