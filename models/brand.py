@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Base class for mobiles. This class maps to the 'mobiles' table."""
+
 from models.base import Mobile, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship

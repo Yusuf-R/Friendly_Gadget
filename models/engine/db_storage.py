@@ -1,56 +1,41 @@
-import urllib
-from os import getenv
+#!/usr/bin/env python3
+"""module for the DBStorage class"""
 
 from models.base import Base
 from models.model import Model
 from models.brand import Brand
-from models.features import Features
-from models.secondary_features import Secondary
-
+from models.feature import Feature
+from models.secondary_feature import Secondary
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 
-usr = "root"
-pswd = "Remisql@91"
-db = "fg_db"
-host = "localhost"
-
-pd_encd = urllib.parse.quote_plus(pswd)
-engine = create_engine(
-    "mysql+mysqldb://{}:{}@{}/{}".format(usr, pd_encd, host, db),
-    pool_pre_ping=False,
-    echo=False,
-)
-engine.connect()
-
 clx = {
     "Model": Model,
     "Brand": Brand,
-    "Features": Features,
+    "Feature": Feature,
     "Secondary": Secondary,
 }
-
-Session = sessionmaker(bind=engine)
 
 
 class DBStorage:
     """interaacts with the MySQL database"""
 
     __engine = None
-
-    __session = Session()
-    obj_inst = {}
+    __session = None
+    __usr = "fg_dev"
+    __pswd = "fg_dev_pwd"
+    __db = "fg_db"
+    __host = "localhost"
 
     def __init__(self):
         """Instantiate a DBStorage object"""
-        HBNB_MYSQL_USER = getenv("HBNB_MYSQL_USER")
-        HBNB_MYSQL_PWD = getenv("HBNB_MYSQL_PWD")
-        HBNB_MYSQL_HOST = getenv("HBNB_MYSQL_HOST")
-        HBNB_MYSQL_DB = getenv("HBNB_MYSQL_DB")
         self.__engine = create_engine(
             "mysql+mysqldb://{}:{}@{}/{}".format(
-                HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST, HBNB_MYSQL_DB
+                DBStorage.__usr,
+                DBStorage.__pswd,
+                DBStorage.__host,
+                DBStorage.__db,
             ),
             pool_pre_ping=False,
             echo=False,
@@ -91,7 +76,7 @@ class DBStorage:
             bind=self.__engine, expire_on_commit=False
         )
         Session = scoped_session(session_factory)
-        self.__session = Session()
+        self.__session = Session
 
     def get(self, cls, id):
         """returns the object based on the class name and id"""
