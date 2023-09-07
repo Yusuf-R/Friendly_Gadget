@@ -425,6 +425,17 @@ class FgCmd(cmd.Cmd):
             storage.save()
             print("{} object updated successfully".format(clx))
             # update secondary likewise
+            for _, val in val.items():
+                if isinstance(val, dict):
+                    for s_k, s_v in val.items():
+                        for i in obj.secondary_details:
+                            if i.inner_key == s_k and i.feature_id == obj.id:
+                                i.inner_key = s_k
+                                i.inner_value = s_v
+                                i.save()
+                                print("Secondary object updated successfully")
+                            else:
+                                continue
             return
         if clx == "Secondary":
             usage = "Usage: update <class> <value>"
