@@ -2034,3 +2034,19 @@ section {
   font-size: 13px;
   color: #012970;
 }
+/* style */
+
+.image img{
+  height:300px;
+  width:300px;
+  box-shadow: 20px 20px grey;
+}
+
+.grid{
+  display:flex;
+  background-color:light-grey;
+  padding:0px;
+}
+.text{
+  padding:5px 50px 50px;
+}
