@@ -14,3 +14,6 @@ class Brand(Mobile, Base):
     models = relationship(
         "Model", backref="brands", cascade="all, delete, delete-orphan"
     )
+    summaries = relationship(
+        "Summary", backref="brands", cascade="all, delete, delete-orphan"
+    )

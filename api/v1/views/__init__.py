@@ -6,6 +6,7 @@ from models.brand import Brand
 from models.model import Model
 from models.feature import Feature
 from models.secondary_feature import Secondary
+from models.summary import Summary
 
 app_views = Blueprint("app_views", __name__, url_prefix="/api/v1")
 
@@ -51,6 +52,11 @@ def create_new(p_cls, ch_cls, p_id, kwargs):
                     s_cls.inner_value = s_v
                     s_cls.save()
         return jsonify(obj.to_dict()), 201
+    if p_cls == Brand and ch_cls == Summary:
+        kwargs["brand_id"] = p_id
+        obj = ch_cls(**kwargs)
+        obj.save()
+        return jsonify(obj.to_dict()), 201
     else:
         abort(404)
 
@@ -63,23 +69,27 @@ def update_match(obj, kwargs):
             "model_id",
             "feature_id",
             "secondary_id",
+            "summary_id",
             ]
     for key, value in kwargs.items():
         if key not in exempt:
             setattr(obj, key, value)
     obj.save()
     ret_data = jsonify(obj.to_dict())
-    if obj.secondary_details:
-        for _, val in kwargs.items():
-            if isinstance(val, dict):
-                for s_k, s_v in val.items():
-                    for i in obj.secondary_details:
-                        if i.inner_key == s_k and i.feature_id == obj.id:
-                            i.inner_key = s_k
-                            i.inner_value = s_v
-                            i.save()
-                        else:
-                            continue
+    try:
+        if obj.secondary_details:
+            for _, val in kwargs.items():
+                if isinstance(val, dict):
+                    for s_k, s_v in val.items():
+                        for i in obj.secondary_details:
+                            if i.inner_key == s_k and i.feature_id == obj.id:
+                                i.inner_key = s_k
+                                i.inner_value = s_v
+                                i.save()
+                            else:
+                                continue
+    except Exception:
+        pass
     return make_response(ret_data, 200)
 
 
@@ -89,3 +99,4 @@ from api.v1.views.brands import *
 from api.v1.views.models import *
 from api.v1.views.features import *
 from api.v1.views.secondary_features import *
+from api.v1.views.summaries import *

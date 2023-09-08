@@ -10,6 +10,7 @@ from models.brand import Brand
 from models.model import Model
 from models.feature import Feature
 from models.secondary_feature import Secondary
+from models.summary import Summary
 from models import storage
 
 
@@ -21,6 +22,7 @@ class FgCmd(cmd.Cmd):
         "Brand": Brand,
         "Feature": Feature,
         "Secondary": Secondary,
+        "Summary": Summary,
     }
 
     def __init__(self):
@@ -58,7 +60,6 @@ class FgCmd(cmd.Cmd):
         return
 
     """Important Management functions"""
-
     def do_create_brand(self, argz):
         """Creates a new instance of a class"""
         usage = "Usage: create_brand <brand_name>"
@@ -217,6 +218,40 @@ class FgCmd(cmd.Cmd):
         )
         return
 
+    def do_create_summary(self, argz):
+        """Create a summary for the given phone model"""
+        usage = "Usage: <model_id> {<summary_key>: <summary_value>}"
+        # check if argumments is empty
+        if argz is None or argz == "":
+            print("Error: Data stream is required\n{}".format(usage))
+            return
+        # check if id was print
+        data = argz.strip("'\"").split(" ", 1)
+        if len(data) == 1:
+            print("Error: Summary attributes is required\n{}".format(usage))
+            return
+        id = data[0]
+        dict_ = data[1]
+        # Validate model_id
+        if storage.get(Model, id) is None:
+            print("Error: Invalid model id")
+            return
+        # Convert the dictionary portion into a dictionary
+        try:
+            dict_ = eval(dict_)
+        # validate dictonary
+        except Exception:
+            print("Error: Summary data must be a dictionary\n{}".format(usage))
+            return
+        if not isinstance(dict_, dict):
+            print("Error: Summary data must be a dictionary\n{}".format(usage))
+            return
+        obj = Summary()
+        obj.model_id = id
+        for key, val in dict_.items():
+            setattr(obj, key, val)
+        obj.save()
+
     def do_create_feature(self, argz):
         """Create a feautre for a given phone model"""
         usage = "Usage: <model_id> {<feature_key>: <feature_value>}"
@@ -242,7 +277,6 @@ class FgCmd(cmd.Cmd):
         except Exception:
             print("Error: Feature data must be a dictionary\n{}".format(usage))
             return
-
         if not isinstance(dict_, dict):
             print("Error: Feature data must be a dictionary\n{}".format(usage))
             return
@@ -383,7 +417,7 @@ class FgCmd(cmd.Cmd):
             return
         if len(tokens) == 3:
             print("Error: Missing value\n{}".format(usage))
-            return    
+            return
 
         clx = tokens[0]
         id = tokens[1]
@@ -436,6 +470,31 @@ class FgCmd(cmd.Cmd):
                                 print("Secondary object updated successfully")
                             else:
                                 continue
+            return
+        if clx == "Summary":
+            usage = "Usage: update <class> <id> <attribute> <value>"
+            val = argz.split(" ", 3)[3]
+            if val is None:
+                print("Error: Summary data required\n{}".format(usage))
+                return
+            # Convert the dictionary portion into a dictionary
+            val = val.strip("\"'")
+            val = val.replace("'", '"')
+            try:
+                val = json.loads(val)
+            except Exception:
+                print(
+                    "Error: Feature data must be a dictionary\n{}".format(
+                        usage
+                    )
+                )
+                return
+            # get the object
+            obj = storage.get(FgCmd.__clx[clx], id)
+            # set the attribute
+            setattr(obj, attr, val)
+            storage.save()
+            print("{} object updated successfully".format(clx))
             return
         if clx == "Secondary":
             usage = "Usage: update <class> <value>"
@@ -531,6 +590,12 @@ class FgCmd(cmd.Cmd):
                 return
             FgCmd.action_specific(clx, id)
             return
+        elif FgCmd.__clx[clx] == Summary:
+            # validate the id agains Secondary
+            if storage.get(Secondary, id) is None:
+                print("Error: Invalid id for the class Secondary")
+                return
+            FgCmd.action_specific(clx, id)
         return
 
     @staticmethod

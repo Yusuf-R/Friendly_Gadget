@@ -6,6 +6,7 @@ from models.model import Model
 from models.brand import Brand
 from models.feature import Feature
 from models.secondary_feature import Secondary
+from models.summary import Summary
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -15,6 +16,7 @@ clx = {
     "Brand": Brand,
     "Feature": Feature,
     "Secondary": Secondary,
+    "Summary": Summary,
 }
 
 
