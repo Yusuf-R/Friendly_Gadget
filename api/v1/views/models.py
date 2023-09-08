@@ -32,7 +32,7 @@ def get_model(model_id):
         strict_slashes=False,
 )
 def get_all_brand_model(brand_id):
-    """Get all model or get a particular model by model id."""
+    """Get all model that matches the brand id."""
     get_brand = storage.get(Brand, brand_id)
     if get_brand is None:
         abort(404)

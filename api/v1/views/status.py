@@ -7,6 +7,7 @@ from models.brand import Brand
 from models.model import Model
 from models.feature import Feature
 from models.secondary_feature import Secondary
+from models.summary import Summary
 
 
 @app_views.route("/status", methods=["GET"])
@@ -26,6 +27,7 @@ def stats():
                 "models": storage.count(Model),
                 "features": storage.count(Feature),
                 "secondary": storage.count(Secondary),
+                "summaries": storage.count(Summary),
             }
         ),
         200,
