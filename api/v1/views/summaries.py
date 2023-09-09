@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """The blueprint for all CRUD operation for Brand."""
-from models.brand import Brand
+from models.model import Model
 from models.summary import Summary
 from flask import jsonify, abort, request
 from api.v1.views import app_views
 from models import storage
 from api.v1.views import create_new, get_match, delete_match, update_match
 
-parent_cls = Brand
+parent_cls = Model
 child_cls = Summary
 
 
@@ -31,17 +31,17 @@ def get_summary(summary_id):
 
 
 @app_views.route(
-    "/brands/<brand_id>/summaries",
+    "/models/<model_id>/summaries",
     methods=["GET"],
     strict_slashes=False,
 )
-def get_all_model_summary(brand_id):
+def get_all_model_summary(model_id):
     """Get all summary of all model base on the brand id"""
-    get_brand = storage.get(Brand, brand_id)
-    if get_brand is None:
+    get_model = storage.get(Model, model_id)
+    if get_model is None:
         abort(404)
     all_models = []
-    for model in get_brand.summaries:
+    for model in get_model.summaries:
         all_models.append(model.to_dict())
     return jsonify(all_models)
 
@@ -57,20 +57,18 @@ def delete_summary(summary_id):
 
 
 @app_views.route(
-    "/brands/<brand_id>/summaries",
+    "/models/<model_id>/summaries",
     methods=["POST"],
     strict_slashes=False,
 )
-def create_summary(brand_id):
+def create_summary(model_id):
     """Create a summary via a POST request."""
     if not request.json:
         abort(400, description="Error: Not a valid JSON")
-    if storage.get(Brand, brand_id) is None:
+    if storage.get(Model, model_id) is None:
         abort(404, description="Object instance not found")
-    if "name" not in request.json:
-        abort(400, description="Error: Missing name")
     kwargs = request.get_json()
-    return create_new(parent_cls, child_cls, brand_id, kwargs)
+    return create_new(parent_cls, child_cls, model_id, kwargs)
 
 
 @app_views.route(
