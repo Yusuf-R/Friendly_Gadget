@@ -72,17 +72,16 @@
           <div class="col-lg-12 entries">
 
             <article class="entry entry-single">
-
               <div class="entry-img">
-                <img src="../static/assets/img/models/iphone-ipad.jpeg" alt="" class="img-fluid">
+                <img src={{model.model_img}} alt="" class="img-fluid">
               </div>
 
               <h2 class="entry-title">
-                <a href="model-single.html">ipad 11 pro</a>
+                <h2 class="entry-title text-primary" >{{model.model_name}}</h2>
               </h2>
 
 
-              <div class="entry-content">
+              <!-- <div class="entry-content">
                 <p>
                   Similique neque nam consequuntur ad non maxime aliquam quas. Quibusdam animi praesentium. Aliquam et
                   laboriosam eius aut nostrum quidem aliquid dicta.
@@ -96,13 +95,13 @@
                 </p>
 
 
-              </div>
+              </div> -->
             <!-- End blog entry -->
             <!--  -->
             <!-- <section id="features" class="features"> -->
             <div class="container features" data-aos="fade-up">
               <!-- Feature Tabs -->
-              <div class="feture-tabs" data-aos="fade-up">
+              <div class="" data-aos="fade-up">
                 <div class="col-lg-12 align-content-center">
 
                   <!-- Tabs -->
@@ -142,305 +141,31 @@
 
                       <div class="sidebar">
                         <h2 class="sidebar-title">Features</h2>
+
                         <div class="sidebar-item categories">
                           <table class="table">
+                            {% for f in model.features %}
+                            {% for k, v in f.to_dict().items() %}
                             <tr>
-                              <th>Phone Details</th>
+                              {% if k not in ["id", "__class__", "model_id"]: %}
+                              <th class="text-danger">{{k}}</th>
                               <td>
-                                <table style="width:100%">
-
+                                <table class="table" style="width:100%">
+                                  {% for key, val in v.items() %}
                                   <tr>
-                                    <th>Bettery</th>
-                                    <td>555-1234</td>
-
+                                    <th class="text-primary">{{key}}</th>
+                                    <td>{{val}}</td>
                                   </tr>
-                                  <tr>
-                                    <th>Memory</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Storage</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-
+                                  {% endfor %}                                  
                                 </table>
                               </td>
+                              {% endif %}
                             </tr>
-                            <tr>
-                              <th>Launch Details</th>
-                              <td>
-                                <table style="width:100%">
+                            {% endfor %}
+                            {% endfor %}
 
-                                  <tr>
-                                    <th>Bettery</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Memory</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Storage</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-
-                                </table>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Network Details</th>
-                              <td>
-                                <table style="width:100%">
-
-                                  <tr>
-                                    <th>Bettery</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Memory</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Storage</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-
-                                </table>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Body Details</th>
-                              <td>
-                                <table style="width:100%">
-
-                                  <tr>
-                                    <th>Bettery</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Memory</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Storage</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-
-                                </table>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Display Details</th>
-                              <td>
-                                <table style="width:100%">
-
-                                  <tr>
-                                    <th>Bettery</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Memory</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Storage</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-
-                                </table>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>platform Details</th>
-                              <td>
-                                <table style="width:100%">
-
-                                  <tr>
-                                    <th>Bettery</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Memory</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Storage</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-
-                                </table>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Processor Details</th>
-                              <td>
-                                <table style="width:100%">
-
-                                  <tr>
-                                    <th>Bettery</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Memory</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Storage</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-
-                                </table>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Chipset Details</th>
-                              <td>
-                                <table style="width:100%">
-
-                                  <tr>
-                                    <th>Bettery</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Memory</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Storage</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-
-                                </table>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Memory Details</th>
-                              <td>
-                                <table style="width:100%">
-
-                                  <tr>
-                                    <th>Bettery</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Memory</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Storage</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-
-                                </table>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Main Camera Details</th>
-                              <td>
-                                <table style="width:100%">
-
-                                  <tr>
-                                    <th>Bettery</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Memory</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Storage</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-
-                                </table>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Selfi Details</th>
-                              <td>
-                                <table style="width:100%">
-
-                                  <tr>
-                                    <th>Bettery</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Memory</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Storage</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-
-                                </table>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Bettery Details</th>
-                              <td>
-                                <table style="width:100%">
-
-                                  <tr>
-                                    <th>Bettery</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Memory</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-                                  <tr>
-                                    <th>Storage</th>
-                                    <td>555-1234</td>
-
-                                  </tr>
-
-                                </table>
-                              </td>
-                            </tr>
-
-
-                            </tr>
-                            <tr>
-
-                            </tr>
                           </table>
-
-
+                          
                         </div>
 
 
@@ -460,16 +185,16 @@
                           <div class="swiper-wrapper align-items-center">
 
                             <div class="swiper-slide">
-                              <img src="../static/assets/img/portfolio/portfolio-1.jpg" alt="">
+                              <img src={{model.model_img}} alt="">
                             </div>
 
-                            <div class="swiper-slide">
+                            <!-- <div class="swiper-slide">
                               <img src="../static/assets/img/portfolio/portfolio-2.jpg" alt="">
                             </div>
 
                             <div class="swiper-slide">
                               <img src="../static/assets/img/portfolio/portfolio-3.jpg" alt="">
-                            </div>
+                            </div> -->
 
                           </div>
                           <div class="swiper-pagination"></div>
