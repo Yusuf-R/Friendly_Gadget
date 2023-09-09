@@ -40,7 +40,7 @@ def create_new(p_cls, ch_cls, p_id, kwargs):
         obj = ch_cls(**kwargs)
         obj.save()
         return jsonify(obj.to_dict()), 201
-    if p_cls == Model and ch_cls == Feature:
+    if p_cls == Model and (ch_cls == Feature or ch_cls == Summary):
         kwargs["model_id"] = p_id
         obj = ch_cls(**kwargs)
         obj.save()
@@ -51,11 +51,6 @@ def create_new(p_cls, ch_cls, p_id, kwargs):
                     s_cls.inner_key = s_k
                     s_cls.inner_value = s_v
                     s_cls.save()
-        return jsonify(obj.to_dict()), 201
-    if p_cls == Brand and ch_cls == Summary:
-        kwargs["brand_id"] = p_id
-        obj = ch_cls(**kwargs)
-        obj.save()
         return jsonify(obj.to_dict()), 201
     else:
         abort(404)
