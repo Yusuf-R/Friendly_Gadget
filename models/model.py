@@ -16,3 +16,6 @@ class Model(Mobile, Base):
     features = relationship(
         "Feature", backref="models", cascade="all, delete, delete-orphan"
     )
+    summaries = relationship(
+        "Summary", backref="models", cascade="all, delete, delete-orphan"
+    )
