@@ -1,0 +1,211 @@
+import uuid
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, String
+Base = declarative_base()
+
+
+class Mobile:
+    """Base class for gadgets. This class does not map to a table."""
+    id = Column(String(60), nullable=False, primary_key=True, default=uuid.uuid4)
+
+    def __init__(self, *args, **kwargs):
+      """
+      Initialize
+      :param args: arguments
+      :param kwargs: keyword arguments
+
+      """
+      if kwargs:
+        for k, v in kwargs.items():
+          if k == "__class__":
+            continue
+          setattr(self, k, v)
+        else:
+          self.id = str(uuid.uuid4())
+
+    def __str__(self):
+        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__)
+
+    def to_dict(self):
+        obj_dict = self.__dict__.copy()
+        obj_dict["__class__"] = self.__class__.__name__
+        if '_sa_instance_state' in obj_dict:
+            del obj_dict['_sa_instance_state']
+        return obj_dict
+
+
+from base import Mobile, Base
+from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
+
+class Brand(Mobile, Base):
+    """Base class for mobiles. This class maps to the 'mobiles' table."""
+    __tablename__  = "brands"
+    brand_name = Column(String(16), nullable=False)
+    models = relationship("Model", backref="brands", cascade="all, delete, delete-orphan")
+
+
+
+from base import Mobile, Base
+from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.orm import relationship
+
+class Model(Mobile, Base):
+    """Subclass of Mobile. This class maps to the 'mobiles' table."""
+    __tablename__  = "models"
+    model_name = Column(String(32), nullable=False)
+    brand_id = Column(String(60), ForeignKey('brands.id'), nullable=False)
+    features = relationship("Features", backref="models")
+
+
+
+from base import Mobile, Base
+from sqlalchemy import Column, String, ForeignKey, JSON
+from sqlalchemy.orm import relationship
+
+
+class Features(Mobile, Base):
+  """Subclass of Mobile. This class maps to the 'mobiles' table."""
+  __tablename__  = "features"
+  model_id = Column(String(60), ForeignKey('models.id'), nullable=False)
+  secondary_details = relationship('Secondary', backref='features')
+  # primary_details = relationship('Primary', backref='features')
+
+  PhoneDetails = Column(JSON, nullable=True)
+  LaunchDetails = Column(JSON, nullable=True)
+  NetworkDetails = Column(JSON, nullable=True)
+  DisplayDetails = Column(JSON, nullable=True)
+  BodyDetails = Column(JSON, nullable=True)
+  PlatformDetails = Column(JSON, nullable=True)
+  Processor = Column(JSON, nullable=True)
+  ChipSet = Column(JSON, nullable=True)
+  MemoryDetails = Column(JSON, nullable=True)
+  MainCamera = Column(JSON, nullable=True)
+  SelfieCamera = Column(JSON, nullable=True)
+  Battery = Column(JSON, nullable=True)
+
+
+
+from base import Mobile, Base
+from sqlalchemy import Column, String, ForeignKey, JSON
+
+class Secondary(Mobile, Base):
+    __tablename__ = 'secondary'
+    # primary_id = Column(String(60), ForeignKey('primary.id'))
+    inner_key = Column(String(256))
+    inner_value = Column(String(256))
+    feature_id = Column(String(60), ForeignKey('features.id'))
+
+
+
+*******************Execution**************************
+import urllib.parse
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from brand import Brand
+from model import Model, Base
+from features import Features
+from data import apple_data, samsung_data, spec_iphone_14
+from secondary_features import Secondary
+
+usr = "root"
+pswd = "Remisql@91"
+db = "fg_db"
+
+pd_encd = urllib.parse.quote_plus(pswd)
+engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(usr, pd_encd, db), pool_pre_ping=True, echo=True)
+engine.connect()
+
+# Create a session
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# Create the tables
+Base.metadata.create_all(engine)
+
+
+def create_brands(data):
+  for brand in data:
+    obj = Brand()
+    obj.brand_name = brand
+    session.add(obj)
+    session.commit()
+  session.close()
+
+def create_models(brand_id, data):
+  for brand in data:
+    for value in brand.values():
+        obj = Model()
+        obj.model_name = value
+        obj.brand_id = brand_id
+        session.add(obj)
+        session.commit()
+  session.close()
+
+def create_features(model_id, data=None):
+
+  feat = [
+    "PhoneDetails",
+    "LaunchDetails",
+    "NetworkDetails",
+    "DisplayDetails",
+    "BodyDetails",
+    "PlatformDetails",
+    "Processor",
+    "ChipSet",
+    "MemoryDetails",
+    "MainCamera",
+    "SelfieCamera",
+    "Battery"
+  ]
+
+  if data is None:
+    obj = Features()
+    obj.model_id = model_id
+    session.add(obj)
+    session.commit()
+    session.close()
+
+  if data is not None:
+    obj = Features()
+    obj.model_id = model_id
+    session.add(obj)
+    session.commit()
+    for column_data in feat:
+      if column_data in data:
+        setattr(obj, column_data, data[column_data])
+        if isinstance(data[column_data], dict):
+          for key, value in data[column_data].items():
+            secondary_entry = Secondary()
+            secondary_entry.feature_id = obj.id
+            secondary_entry.inner_key = key
+            secondary_entry.inner_value = value
+            session.add(secondary_entry)
+    session.commit()
+  session.close()
+
+
+brands = ["Apple", "Huawei", "Samsung", "Tecno", "Nokia"]
+create_brands(brands)
+
+apple_id = session.query(Brand).filter_by(brand_name="Apple").first().id
+samsung_id = session.query(Brand).filter_by(brand_name="Samsung").first().id
+
+
+create_models(apple_id, apple_data)
+create_models(samsung_id, samsung_data)
+
+# get the id of iphone 14
+iphone_14_id = session.query(Model).filter(Model.model_name == "iPhone 14").first().id
+
+create_features(iphone_14_id, spec_iphone_14)
+
+
+
+
+
+08c5cb80-e952-4579-a013-3f1f24d9e857 {"gsmBatteryDetails": {"batteryCharging": "45W wired", PD3.0 15W wireless (QiPMA) 4.5W reverse wireless", "batteryType": "Li-Ion 5000 mAh, non-removable"}, "gsmMemoryDetails": {"memoryCardSlot": "No", "memoryInternal": "128GB 8GB RAM, 256GB 12GB RAM, 512GB 12GB RAM, 1TB 12GB RAM",   "memoryOther1": "UFS 3.1"} }
+
+
+
+{"gsmBatteryDetails": {"batteryCharging": "45W wired, PD3.0 15W wireless (Qi/PMA) 4.5W reverse wireless", "batteryType": "Li-Ion 5000 mAh, non-removable"}, "gsmMemoryDetails": {"memoryCardSlot": "No", "memoryInternal": "128GB 8GB RAM, 256GB 12GB RAM, 512GB 12GB RAM, 1TB 12GB RAM", "memoryOther1": "UFS 3.1"}}

@@ -35,7 +35,7 @@
   <header id="header" class="header fixed-top">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="{{ url_for('index') }}" class="logo d-flex align-items-center">
         <img src="../static/assets/img/logo.png" alt="">
         <span>Friendly Gadget</span>
       </a>
@@ -54,7 +54,7 @@
       <div class="container">
 
         <ol>
-          <li><a href="index.html">Home</a></li>
+          <li><a href="{{ url_for('index') }}">Home</a></li>
           <li><a href="models.html">Models</a></li>
           <li> Single Model</li>
         </ol>

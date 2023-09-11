@@ -35,7 +35,7 @@
   <header id="header" class="header fixed-top">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="{{ url_for('index') }}" class="logo d-flex align-items-center">
         <img src="../static/assets/img/logo.png" alt="">
         <span>Friendly Gadget</span>
       </a>
@@ -428,41 +428,51 @@
                       <form action="">
                         <div class="row">
                           <div class="col-md-6 form-group">
-      
-                            <select name="category" class="form-select" aria-label="Default select example">
-                              <option selected disabled>Select your Device</option>
-      
-                              <option>PC/Labtop</option>
-                              <option>Mobile</option>
+
+                            <label for="deviceSelect">Select Your Device:</label>
+                            <select class="form-select" id="deviceSelect">
+                              <option value="PC">PC</option>
+                              <option value="Mobile">Mobile</option>
                             </select>
-      
                           </div>
                           <div class="col-md-6 form-group">
-                            <select data-placeholder="Select Your Purpose..." multiple class="chosen-select form-select"
-                              name="test">
-                              <option value=""></option>
-                              <option>Education</option>
-                              <option>Office User</option>
-                              <option>Home User</option>
-                              <option>Business</option>
-                              <option>Photographer</option>
-                              <option>bloger </option>
-                              <option>Publisher</option>
-                              <option>Programmer</option>
-                              <option>Social Media</option>
-                              <option>Developement</option>
-                              <option>High-End Gaming </option>
-                              <option>Low-End Gaming </option>
+                            <label for="itemSelect">Select an Item:</label>
+                            <select class="form-select" id="itemSelect">
+                              <option value="Gaming">Gaming</option>
+                              <option value="Photography">Photography</option>
+                              <option value="SocialMedia">Social Media</option>
+                              <option value="Publishing">Publishing</option>
+                              <option value="Marketing">Marketing</option>
+                              <option value="Multimedia">Multimedia</option>
+                              <option value="Basic">Basic</option>
                             </select>
                           </div>
                         </div>
-                    
-      
+                        <div class="row">
+                          <div class="col-md-6 form-group">
+
+                            <label for="subItemSelect">Select Sub-Item:</label>
+                            <select class="form-select" id="subItemSelect">
+                              <!-- Options will be populated dynamically with JavaScript -->
+                            </select>
+                          </div>
+                          <div class="col-md-3 form-group">
+                            <button type="button" class="btn btn-primary" onclick="addSelection()">Add
+                              Selection</button>
+                          </div>
+                          <div class="col-md-3 form-group">
+                            <!-- <label for="currentSelection">Current Selection:</label> -->
+                            <div id="currentSelectionContainer" class="bg-light"></div>
+
+                          </div>
+                          
+                        </div>
+
+
                         <button type="submit" class="btn btn-primary"><a href="models.html"
                             class="text-white">Search</a></button>
-                    </div>
-      
-                    </form>
+
+                      </form>
       
                   </div>
       
@@ -478,40 +488,6 @@
           <p>Check our latest Models</p>
         </header>
 
-        <!-- <div class="row" data-aos="fade-up" data-aos-delay="100">
-          <div class="col-lg-12 d-flex justify-content-center">
-            <ul id="portfolio-flters">
-              <li data-filter="*" class="filter-active">All</li>
-              {% for brand in brands %}              
-              <li data-filter="*" class="filter-active"> {{brand}}</li> 
-              {% endfor %}        
-            </ul>
-          </div>
-        </div> -->
-        
-        <div class="row gy-4 portfolio-container" data-aos="fade-up" data-aos-delay="200">
-
-        <!-- <div class="row">
-          {% for m in obj %}
-            {% for model in m.models %}
-              <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-                <div class="portfolio-wrap">
-                  <img src="{{ model.model_img }}" class="img-fluid" alt="">
-                  <div class="portfolio-info">
-                    <h4>{{ m.brand_name }}</h4>
-                    <p>{{ model.model_name }}</p>
-                    <div class="portfolio-links">
-                      <a href="{{ model.model_img }}" data-gallery="portfolioGallery" class="portfokio-lightbox" title="{{ model.model_name }}"><i class="bi bi-plus"></i></a>
-                      <a href="single_model" title="More Details"><i class="bi bi-link"></i></a>
-                      
-                    </div>
-                  </div>
-                </div>
-              </div>
-            {% endfor %}
-          {% endfor %}
-        </div>
-         -->
          <div class="row">
           {% for m in obj %}
             {% for model in m.models %}
@@ -530,138 +506,9 @@
               </div>
             {% endfor %}
           {% endfor %}
-        </div>
-        
+        </div>      
 
           
-
-
-          <!-- <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-            <div class="portfolio-wrap">
-              <img src="../static/assets/img/models/galaxy Z filp4.jpeg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Samsung</h4>
-                <p>galaxy Z filp4</p>
-                <div class="portfolio-links">
-                  <a href="../static/assets/img/portfolio/portfolio-1.jpg" data-gallery="portfolioGallery" class="portfokio-lightbox" title="App 1"><i class="bi bi-plus"></i></a>
-                  <a href="model-single.html" title="More Details"><i class="bi bi-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="../static/assets/img/models/hawie tablet.jpeg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Huawie</h4>
-                <p>Tablet </p>
-                <div class="portfolio-links">
-                  <a href="../static/assets/img/models/hawie tablet.jpeg" data-gallery="portfolioGallery" class="portfokio-lightbox" title="Web 3"><i class="bi bi-plus"></i></a>
-                  <a href="model-single.html" title="More Details"><i class="bi bi-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-            <div class="portfolio-wrap">
-              <img src="../static/assets/img/models/galaxy tab s7.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Samsung</h4>
-                <p>Galaxy A23</p>
-                <div class="portfolio-links">
-                  <a href="../static/assets/img/models/galaxy tab s7.jpg" data-gallery="portfolioGallery" class="portfokio-lightbox" title="App 2"><i class="bi bi-plus"></i></a>
-                  <a href="model-single.html" title="More Details"><i class="bi bi-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-            <div class="portfolio-wrap">
-              <img src="../static/assets/img/models/iphone 12.jpeg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Iphone 12</h4>
-                <p>apple</p>
-                <div class="portfolio-links">
-                  <a href="../static/assets/img/models/iphone 12.jpeg data-gallery="portfolioGallery" class="portfokio-lightbox" title="Card 2"><i class="bi bi-plus"></i></a>
-                  <a href="model-single.html" title="More Details"><i class="bi bi-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="../static/assets/img/models/mate x3.jpeg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Mate X3</h4>
-                <p>Huwaie</p>
-                <div class="portfolio-links">
-                  <a href="../static/assets/img/models/mate x3.jpeg" data-gallery="portfolioGallery" class="portfokio-lightbox" title="Web 2"><i class="bi bi-plus"></i></a>
-                  <a href="model-single.html" title="More Details"><i class="bi bi-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-            <div class="portfolio-wrap">
-              <img src="../static/assets/img/models/galaxy tab A7.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Galaxy tab A7</h4>
-                <p>Samsung</p>
-                <div class="portfolio-links">
-                  <a href="../static/assets/img/portfolio/portfolio-6.jpg" data-gallery="portfolioGallery" class="portfokio-lightbox" title="App 3"><i class="bi bi-plus"></i></a>
-                  <a href="model-single.html" title="More Details"><i class="bi bi-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-            <div class="portfolio-wrap">
-              <img src="../static/assets/img/models/iphone-ipad.jpeg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Apple</h4>
-                <p>Ipad 11 pro</p>
-                <div class="portfolio-links">
-                  <a href="../static/assets/img/models/iphone-ipad.jpeg" data-gallery="portfolioGallery" class="portfokio-lightbox" title="App 1"><i class="bi bi-plus"></i></a>
-                  <a href="model-single.html" title="More Details"><i class="bi bi-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-            <div class="portfolio-wrap">
-              <img src="../static/assets/img/models/iPhone 14 Pro Max.png" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>iphone 14</h4>
-                <p>Apple</p>
-                <div class="portfolio-links">
-                  <a href="../static/assets/img/models/mediapad T1.jpeg" data-gallery="portfolioGallery" class="portfokio-lightbox" title="Card 3"><i class="bi bi-plus"></i></a>
-                  <a href="model-single.html" title="More Details"><i class="bi bi-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="../static/assets/img/models/mediapad T1.jpeg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Meta tab</h4>
-                <p>Huwaie</p>
-                <div class="portfolio-links">
-                  <a href="../static/assets/img/models/mediapad T1.jpeg" data-gallery="portfolioGallery" class="portfokio-lightbox" title="Web 3"><i class="bi bi-plus"></i></a>
-                  <a href="model-single.html" title="More Details"><i class="bi bi-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div> -->
-
         </div>
 
       </div>

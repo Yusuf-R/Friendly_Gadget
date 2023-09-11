@@ -2213,3 +2213,21 @@ img.flexcardimgItem {
 
 
 }
+
+
+.selection-item {
+  display: inline-block;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.remove-button {
+  cursor: pointer;
+  margin-left: 8px;
+  font-weight: bold;
+  color: red;
+}

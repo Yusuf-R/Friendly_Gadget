@@ -1,0 +1,97 @@
+curl -X POST http://0.0.0.0:5100/api/v1/models/ef628327-5e01-4fb0-960a-219148b9d130/summaries -H "Content-Type: application/json" -d '{"Release": "September 21, 2018", "Screen": "6.5 inches", "Memory": "4GB RAM", "Storage": "64/256/512GB Built-in", "Camera": "12MP(Rear)", "Battery": "3174 mAh (12.08 Wh)"}'
+
+
+{"Release": "February 25, 2022", "Screen": "6.1 inches", "Memory": "8GB RAM", "Storage": "128/256GB Built-in", "Camera": "50MP(Rear)", "Battery": "3700 mAh"}
+
+
+
+<div class="container" data-aos="fade-up">
+
+       <header class="section-header">
+
+       </header>
+
+      <div class="row">
+       {% for summary in obj %}
+           {% set data = summary.to_dict().items() %}
+           {% set model = summary.models %}
+           <div class="col-5">
+           <div class="grid">
+           <div class="image">
+             <img
+               src={{model.model_img}}
+               alt="image">
+               <br><br>
+           </div><!-- end of image div-->
+           <div class="text">
+             <h3 class="post-title">{{model.model_name}}</h3><hr>
+             <h2 class="text-danger">Key Specs</h2>
+             {% for key, value in data %}
+             <table style="width:100%">
+               {% if key not in ["id", "__class__", "model_id"] %}
+               <tr>
+                 <th>{{key}}</th>
+                 <td>{{value}}</td>
+               </tr>
+               {% endif %}
+            </table>
+             {% endfor %}
+             <br>
+             <a href="{{ url_for('single_model', model_id=summary.model_id)}}" class="readmore stretched-link mt-auto"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+           </div><!-- end of text div-->
+           {% endfor %}
+         </div>
+
+       </div>
+
+     </div>
+       <!--end of grid div-->
+     </div>
+
+   ******************************************88
+
+   <section id="recent-blog-posts" class="recent-blog-posts">
+      <div class="container" data-aos="fade-up">
+        <header class="section-header">
+        </header>
+
+        <div class="row">
+            {% for summary in obj %}
+                {% set data = summary.to_dict().items() %}
+                {% set model = summary.models %}
+                <div class="col-6">
+                    <div class="grid">
+                        <div class="image">
+                          <!-- <a href="/single_model/{{ summary.models.id }}" class="readmore stretched-link mt-auto"><span><img src="{{ summary.models.model_img }}" alt="image"></span><i class="bi bi-arrow-right"></i></a> -->
+
+                          <!-- <a href="{{ url_for('single_model', model_id=model.id) }}" class="readmore stretched-link mt-auto"><span><img src={{model.model_img}} alt="image"></span><i class="bi bi-arrow-right"></i></a> -->
+
+                            <img src={{summary.models.model_img}} alt="image">
+                            <!-- <br><br> -->
+                        </div><!-- end of image div-->
+                        <div class="text">
+                            <h3 class="post-title">{{model.model_name}}</h3><hr>
+                            <h2 class="text-danger">Key Specs</h2>
+                            <table style="width:10%; padding:50%; color:'green'">
+                                {% for key, value in data %}
+                                    {% if key not in ["id", "__class__", "model_id"] %}
+                                        <tr>
+                                            <th>{{key}}</th>
+                                            <td>{{value}}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </table>
+                             <!-- <p><a href="/single_model/{{ summary.models.id }}"> {{ summary.models.id }}</a></p> -->
+                            <p><a href="/single_model/{{ summary.models.id }}">Read More</a></p>
+                            <!-- <a href="{{ url_for('single_model', model_id=summary.models.id) }}" class="readmore stretched-link mt-auto"><span>Read More</span><i class="bi bi-arrow-right"></i></a> -->
+                        </div><!-- end of text div-->
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+    </section>
