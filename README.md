@@ -1,7 +1,7 @@
 # Friendly_Gadget
 ALX-Project_Portfolio
 # CVComposer
-![banner](web_dynamic/static/assets/img/hero-bg.png)
+![banner](web_dynamic/static/assets/img/cover.png)
 
 
 ## Overview
