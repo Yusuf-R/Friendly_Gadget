@@ -4,6 +4,7 @@ from models.brand import Brand
 from models.model import Model
 from flask import Flask,  render_template
 from models import storage
+from models.summary import Summary
 
 app = Flask(__name__)
 
@@ -15,6 +16,7 @@ def teardown_db(exception):
 
 
 @app.route('/', strict_slashes=False)
+@app.route('/home', strict_slashes=False)
 # @app.route('/friendly_gadget', strict_slashes=False)
 def index():
     """The homepage of the application."""
@@ -33,7 +35,15 @@ def single_model(model_id):
     get_model = storage.get(Model, model_id)
     # get_feat = get_model.features
 
-    return render_template('model-single.html', model=get_model) # feat=get_feat)
+    return render_template('model-single.html', model=get_model)
+
+
+@app.route('/search', strict_slashes=False)
+def search():
+    """The search page for each device."""
+    all_obj = storage.all(Summary).values()
+
+    return render_template('search.html', obj=all_obj)
 
 
 if __name__ == '__main__':
