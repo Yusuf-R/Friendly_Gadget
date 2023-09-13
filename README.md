@@ -1,6 +1,6 @@
 # Friendly_Gadget
 ALX-Project_Portfolio
-# CVComposer
+# Friendly Gadget
 ![banner](web_dynamic/static/assets/img/cover.png)
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/Yusuf-R/Friendly_Gadget)
