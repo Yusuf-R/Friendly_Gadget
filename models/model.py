@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """This the base template for all model object instances."""
 
-from models.base import Mobile, Base
-from sqlalchemy import Column, String, ForeignKey
+from models.base import Base, Mobile
+from sqlalchemy import Column, ForeignKey, String
 from sqlalchemy.orm import relationship
 
 
