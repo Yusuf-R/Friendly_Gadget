@@ -1,4 +1,9 @@
-
+/**
+* Template Name: Frindly Gadget - v1.9.0
+* Template URL: https://bootstrapmade.com/Frindly Gadget-bootstrap-startup-template/
+* Author: BootstrapMade.com
+* License: https://bootstrapmade.com/license/
+*/
 (function() {
   "use strict";
 
@@ -284,9 +289,6 @@
 })();
 
 
-
-
-
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('deviceSelect').addEventListener('change', function() {
       // Reset selections on device change
@@ -365,4 +367,60 @@ function addSelection() {
 function removeSelection(selection) {
   var currentSelectionContainer = document.getElementById('currentSelectionContainer');
   currentSelectionContainer.removeChild(selection);
+}
+
+
+function search() {
+  var currentSelectionContainer = document.getElementById('currentSelectionContainer');
+  var selections = currentSelectionContainer.querySelectorAll('.selection-item');
+
+  // Initialize an empty dictionary
+  var searchDict = {};
+
+  selections.forEach(function(selection) {
+      var selectionText = selection.textContent;
+      var parts = selectionText.split(' ');
+
+      if (parts.length === 2) {
+          var item = parts[0];
+          var subItem = parts[1];
+          
+          // remove the x button for delete
+          var subItem = parts[1].replace('x', '');
+
+          // Add to the dictionary
+          searchDict[item] = subItem;
+      }
+  });
+
+  // Send the searchDict to your backend
+  sendToBackend(searchDict);
+}
+
+
+function sendToBackend(searchDict) {
+  // Send a POST request to your Python backend
+  fetch('/search', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(searchDict)
+  })
+  .then(response => {
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+})
+  .then(data => {
+      // Handle the response from the backend
+      console.log(data);
+      var queryString = data.map(obj => `model_id=${obj.model_id}`).join('&');
+      window.location.href = `/result?${queryString}`;
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+  console.log('Data to be sent to backend:', searchDict);
 }
