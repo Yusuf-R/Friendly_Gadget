@@ -209,3 +209,34 @@ create_features(iphone_14_id, spec_iphone_14)
 
 
 {"gsmBatteryDetails": {"batteryCharging": "45W wired, PD3.0 15W wireless (Qi/PMA) 4.5W reverse wireless", "batteryType": "Li-Ion 5000 mAh, non-removable"}, "gsmMemoryDetails": {"memoryCardSlot": "No", "memoryInternal": "128GB 8GB RAM, 256GB 12GB RAM, 512GB 12GB RAM, 1TB 12GB RAM", "memoryOther1": "UFS 3.1"}}
+
+
+
+friendly-gadget.com ==== friendly-gadget.com/home
+
+127.0.0.0.1 === 127.0.0.0.1/ === 127.0.0.0.1/friendly_gadget === 127.0.0.0.1/friendly_gadget/home ==== home.py
+
+
+gunicorn --bind 0.0.0.0:5000 web_flask.0-hello_route:app
+gunicorn --bind 0.0.0.0:5000 0x01_create_host_api.app
+
+
+
+    PhoneDetails
+    NetworkDetails
+    LaunchDetails
+    BodyDetails
+    DisplayDetails
+    PlatformDetails
+    MemoryDetails
+    MainCameraDetails
+    SelfieCameraDetails
+    SoundDetails
+    CommunicationsDetails
+    FeaturesDetails
+    BatteryDetails
+
+
+/opt/render/project/src/.venv/bin/python -m pip install --upgrade pip && pip install gunicorn && pip install flask && pip install pytz
+
+python3 -m 0x01-Api.0x01_create_host_api 
