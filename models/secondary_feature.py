@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Base class for the secondary features"""
 
-from models.base import Mobile, Base
-from sqlalchemy import Column, String, ForeignKey
+from models.base import Base, Mobile
+from sqlalchemy import Column, ForeignKey, String
 
 
 class Secondary(Mobile, Base):
