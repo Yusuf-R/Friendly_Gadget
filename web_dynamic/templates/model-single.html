@@ -15,9 +15,7 @@
   <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
-  <link
-    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="../static/assets/vendor/aos/aos.css" rel="stylesheet">
@@ -27,7 +25,7 @@
   <link href="../static/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="../static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet" />
-  <!-- Custome Css file -->
+
   <link href="../static/assets/css/style.css" rel="stylesheet">
 </head>
 
@@ -68,112 +66,187 @@
     <!-- ======= Blog Single Section ======= -->
     <section id="blog" class="blog">
       <div class="container" data-aos="fade-up">
+
         <div class="row">
+
           <div class="col-lg-12 entries">
+
             <article class="entry entry-single">
-              <!-- display Model image -->
               <div class="entry-img">
                 <img src={{model.model_img}} alt="" class="img-fluid">
               </div>
-              <!-- Display Model Name -->
-              <h2 class="entry-title text-primary">{{model.model_name}}</h2>
-              <!-- <section id="features" class="features"> -->
-              <div class="container features" data-aos="fade-up">
-                <!-- Speceific Model Tabs -->
-                <div class="" data-aos="fade-up">
-                  <div class="col-lg-12 align-content-center">
-                    <!-- Tabs -->
-                    <ul class="nav nav-pills mb-3">
-                      <li>
-                        <a class="nav-link active" data-bs-toggle="pill" href="#tab1"> Over View</a>
-                      </li>
-                      <li>
-                        <a class="nav-link" data-bs-toggle="pill" href="#tab2">Specification</a>
-                      </li>
-                      <li>
-                        <a class="nav-link" data-bs-toggle="pill" href="#tab3">Image Gallary</a>
-                      </li>
-                    </ul><!-- End Tabs -->
 
-                    <!-- Tab Content -->
-                    <div class="tab-content">
+              <h2 class="entry-title">
+                <h2 class="entry-title text-primary" >{{model.model_name}}</h2>
+              </h2>
 
-                      <div class="tab-pane fade show active" id="tab1">
-                        <!-- Display Model Discription -->
-                        <div class="d-flex align-items-center mb-2">
-                          <i class="bi bi-check2"></i>
-                          <h4>Repudiandae rerum velit modi et officia quasi facilis</h4>
-                        </div>
-                        <p>Laborum omnis voluptates voluptas qui sit aliquam blanditiis. Sapiente minima commodi dolorum
-                          non eveniet magni quaerat nemo et.</p>
-                        <div class="d-flex align-items-center mb-2">
-                          <i class="bi bi-check2"></i>
-                          <h4>Incidunt non veritatis illum ea ut nisi</h4>
-                        </div>
-                        <p>Non quod totam minus repellendus autem sint velit. Rerum debitis facere soluta tenetur. Iure
-                          molestiae assumenda sunt qui inventore eligendi voluptates nisi at. Dolorem quo tempora. Quia
-                          et
-                          perferendis.</p>
-                      </div><!-- End Tab 1 Content -->
 
-                      <div class="tab-pane fade show" id="tab2">
-                        <!-- Display Model Features -->
-                        <div class="sidebar">
-                          <h2 class="sidebar-title">Features</h2>
+              <!-- <div class="entry-content">
+                <p>
+                  Similique neque nam consequuntur ad non maxime aliquam quas. Quibusdam animi praesentium. Aliquam et
+                  laboriosam eius aut nostrum quidem aliquid dicta.
+                  Et eveniet enim. Qui velit est ea dolorem doloremque deleniti aperiam unde soluta. Est cum et quod
+                  quos aut ut et sit sunt. Voluptate porro consequatur assumenda perferendis dolore.
+                </p>
 
-                          <div class="sidebar-item categories">
-                            <table class="table">
-                              {% for f in model.features %}
-                              {% for k, v in f.to_dict().items() %}
-                              <tr>
-                                {% if k not in ["id", "__class__", "model_id"]: %}
-                                <th class="text-danger">{{k}}</th>
-                                <td>
-                                  <table class="table" style="width:100%">
-                                    {% for key, val in v.items() %}
-                                    <tr>
-                                      <th class="text-primary">{{key}}</th>
-                                      <td>{{val}}</td>
-                                    </tr>
-                                    {% endfor %}
-                                  </table>
-                                </td>
-                                {% endif %}
-                              </tr>
-                              {% endfor %}
-                              {% endfor %}
-                            </table>
-                          </div>
-                          <!-- End sidebar categories-->
-                        </div><!-- End sidebar -->
-                      </div><!-- End Tab 2 Content -->
-                      <div class="tab-pane fade show" id="tab3">
-                        <!-- Diplay Model Gallary Image -->
-                        <div class="col-lg-12">
-                          <div class="portfolio-details-slider swiper">
-                            <div class="swiper-wrapper align-items-center">
-                              <div class="swiper-slide">
-                                <img src={{model.model_img}} alt="">
-                              </div>
-                            </div>
-                            <div class="swiper-pagination"></div>
-                          </div>
-                        </div><!-- End Tab 3 Content -->
+                <p>
+                  Sit repellat hic cupiditate hic ut nemo. Quis nihil sunt non reiciendis. Sequi in accusamus harum vel
+                  aspernatur. Excepturi numquam nihil cumque odio. Et voluptate cupiditate.
+                </p>
+
+
+              </div> -->
+            <!-- End blog entry -->
+            <!--  -->
+            <!-- <section id="features" class="features"> -->
+            <div class="container features" data-aos="fade-up">
+              <!-- Feature Tabs -->
+              <div class="" data-aos="fade-up">
+                <div class="col-lg-12 align-content-center">
+
+                  <!-- Tabs -->
+                  <ul class="nav nav-pills mb-3">
+                    <li>
+                      <a class="nav-link active" data-bs-toggle="pill" href="#tab1"> Over View</a>
+                    </li>
+                    <li>
+                      <a class="nav-link" data-bs-toggle="pill" href="#tab2">Specification</a>
+                    </li>
+                    <li>
+                      <a class="nav-link" data-bs-toggle="pill" href="#tab3">Image Gallary</a>
+                    </li>
+                  </ul><!-- End Tabs -->
+
+                  <!-- Tab Content -->
+                  <div class="tab-content">
+
+                    <div class="tab-pane fade show active" id="tab1">
+
+                      <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-check2"></i>
+                        <h4>Repudiandae rerum velit modi et officia quasi facilis</h4>
                       </div>
+                      <p>Laborum omnis voluptates voluptas qui sit aliquam blanditiis. Sapiente minima commodi dolorum
+                        non eveniet magni quaerat nemo et.</p>
+                      <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-check2"></i>
+                        <h4>Incidunt non veritatis illum ea ut nisi</h4>
+                      </div>
+                      <p>Non quod totam minus repellendus autem sint velit. Rerum debitis facere soluta tenetur. Iure
+                        molestiae assumenda sunt qui inventore eligendi voluptates nisi at. Dolorem quo tempora. Quia et
+                        perferendis.</p>
+                    </div><!-- End Tab 1 Content -->
+
+                    <div class="tab-pane fade show" id="tab2">
+
+                      <div class="sidebar">
+                        <h2 class="sidebar-title">Features</h2>
+
+                        <div class="sidebar-item categories">
+                          <table class="table">
+                            {% for f in model.features %}
+                            {% for k, v in f.to_dict().items() %}
+                            <tr>
+                              {% if k not in ["id", "__class__", "model_id"]: %}
+                              <th class="text-danger">{{k}}</th>
+                              <td>
+                                <table class="table" style="width:100%">
+                                  {% for key, val in v.items() %}
+                                  <tr>
+                                    <th class="text-primary">{{key}}</th>
+                                    <td>{{val}}</td>
+                                  </tr>
+                                  {% endfor %}                                  
+                                </table>
+                              </td>
+                              {% endif %}
+                            </tr>
+                            {% endfor %}
+                            {% endfor %}
+
+                          </table>
+                          
+                        </div>
+
+
+                        <!-- End sidebar categories-->
+
+
+
+                      </div><!-- End sidebar -->
+
+                    </div><!-- End Tab 2 Content -->
+
+                    <div class="tab-pane fade show" id="tab3">
+
+
+                      <div class="col-lg-12">
+                        <div class="portfolio-details-slider swiper">
+                          <div class="swiper-wrapper align-items-center">
+
+                            <div class="swiper-slide">
+                              <img src={{model.model_img}} alt="">
+                            </div>
+
+                            <!-- <div class="swiper-slide">
+                              <img src="../static/assets/img/portfolio/portfolio-2.jpg" alt="">
+                            </div>
+
+                            <div class="swiper-slide">
+                              <img src="../static/assets/img/portfolio/portfolio-3.jpg" alt="">
+                            </div> -->
+
+                          </div>
+                          <div class="swiper-pagination"></div>
+                        </div>
+
+
+
+                      </div><!-- End Tab 3 Content -->
+
                     </div>
-                  </div><!-- End Feature Tabs -->
-                </div>
-              </div><!-- End blog entries list -->
-            </article>
+
+                  </div>
+
+                  <!-- <div class="col-lg-6">
+                  <img src="assets/img/features.png" class="img-fluid" alt="">
+                </div> -->
+
+                </div><!-- End Feature Tabs -->
+              </div>
+
+
+              <!--  -->
+            </div><!-- End blog entries list -->
+          </article>
+
+
           </div>
+
         </div>
-      </div>
     </section><!-- End Blog Single Section -->
 
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
+
+    <div class="footer-newsletter">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-12 text-center">
+            <h4>Our Newsletter</h4>
+            <p>Please! Subscribe in our Site to Follow our News</p>
+          </div>
+          <div class="col-lg-6">
+            <form action="" method="post">
+              <input type="email" name="email"><input type="submit" value="Subscribe">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="footer-top">
       <div class="container">
         <div class="row gy-4">
@@ -190,7 +263,7 @@
             <ul>
               <li><i class="bi bi-chevron-right"></i> <a href="#hero">Home</a></li>
               <li><i class="bi bi-chevron-right"></i> <a href="#about">About us</a></li>
-              <li><i class="bi bi-chevron-right"></i> <a href="#features">Features</a></li>
+              <li><i class="bi bi-chevron-right"></i> <a href="#recent-blog-posts">blog</a></li>
             </ul>
           </div>
           <div class="col-lg-4 col-md-12 footer-contact text-center text-md-start">
@@ -227,7 +300,7 @@
   <script src="../static/assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="../static/assets/vendor/php-email-form/validate.js"></script>
 
-  <!-- Custom Main JS File -->
+  <!-- Template Main JS File -->
   <script src="../static/assets/js/main.js"></script>
 
 </body>
