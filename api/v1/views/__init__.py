@@ -100,3 +100,4 @@ from api.v1.views.models import *
 from api.v1.views.features import *
 from api.v1.views.secondary_features import *
 from api.v1.views.summaries import *
+from api.v1.views.searches import *
