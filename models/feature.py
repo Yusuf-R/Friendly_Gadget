@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Feature template for all object instances"""
 
-
-from models.base import Mobile, Base
-from sqlalchemy import Column, String, ForeignKey, JSON
+from models.base import Base, Mobile
+from sqlalchemy import Column, ForeignKey, JSON, String
 from sqlalchemy.orm import relationship
 
 
@@ -23,7 +22,6 @@ class Feature(Mobile, Base):
     secondary_details = relationship(
         "Secondary", backref="features", cascade="all, delete, delete-orphan"
     )
-
     PhoneDetails = Column(JSON, nullable=True)
     NetworkDetails = Column(JSON, nullable=True)
     LaunchDetails = Column(JSON, nullable=True)
