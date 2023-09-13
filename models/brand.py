@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Base class for mobiles. This class maps to the 'mobiles' table."""
 
-from models.base import Mobile, Base
+from models.base import Base, Mobile
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 
@@ -14,4 +14,3 @@ class Brand(Mobile, Base):
     models = relationship(
         "Model", backref="brands", cascade="all, delete, delete-orphan"
     )
-    
