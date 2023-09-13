@@ -2,7 +2,7 @@
 """The blueprint for all CRUD operation for Brand."""
 from models.brand import Brand
 from models.model import Model
-from flask import Flask,  render_template
+from flask import Flask, render_template, request, jsonify
 from models import storage
 from models.summary import Summary
 
@@ -33,17 +33,30 @@ def index():
 def single_model(model_id):
     """The single model page for each device."""
     get_model = storage.get(Model, model_id)
-    # get_feat = get_model.features
-
     return render_template('model-single.html', model=get_model)
 
 
-@app.route('/search', strict_slashes=False)
+@app.route('/search', methods=['POST'], strict_slashes=False)
 def search():
-    """The search page for each device."""
-    all_obj = storage.all(Summary).values()
+    """Get the content from the frontend user input."""
+    user_data = request.get_json()
+    matching_objects = []
+    for summary in storage.all(Summary).values():
+        obj_dict = summary.to_dict()
+        # Check if all key-value pairs in user_data are present in obj_dict
+        if all(obj_dict.get(key) == value for key, value in user_data.items()):
+            matching_objects.append(summary)
+    obj_dict = [obj.to_dict() for obj in matching_objects]
+    # result(matching_objects)
+    return jsonify(obj_dict)
 
-    return render_template('search.html', obj=all_obj)
+
+@app.route('/result', strict_slashes=False)
+def result():
+    """Get the result from the seach content from the frontend user input."""
+    obj_ids = request.args.getlist('model_id')
+    obj_list = [storage.get(Model, obj_id) for obj_id in obj_ids]
+    return render_template('result.html', result=obj_list)
 
 
 if __name__ == '__main__':
