@@ -54,8 +54,7 @@
       <div class="container">
 
         <ol>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="Admin.html">Admin</a></li>
+          <li><a href="{{ url_for('admin') }}">Admin</a></li>
           <li>Brands</li>
         </ol>
         <h2>Edit Brand</h2>
@@ -76,18 +75,18 @@
     
                     <div class="sidebar-item categories">
                       <ul>
-                        <li><a href="Admin.html"  class="sidebar-title " >Dashboard </a></li>
+                        <li><a href="{{ url_for('admin') }}"  class="sidebar-title " >Dashboard </a></li>
                         <hr>
-                        <li><a href="Brands.html" class="active">Brands </a></li>
+                        <li><a href="{{ url_for('brands') }}" class="active">Brands </a></li>
                         <hr>
-                        <li><a href="Model.html">Models </a></li>
+                        <li><a href="{{ url_for('models') }}">Models </a></li>
                         <hr>
                         <li><a href="features.html">Features </a></li>
                       
                       </ul>
                     </div><!-- End sidebar categories-->
     
-                  
+                                 
                   </div><!-- End sidebar recent posts-->
     
                   
@@ -101,14 +100,15 @@
             <div class="blog-comments">
               <div class="reply-form">
                 <h4>Edit Brand</h4>
-                <form action="">
+                <form action="/update_brand/{{brand.id}}" method="POST">
                   <!-- Form to Edit Brand -->
                   <div class="row">
                     <div class="col-md-6 form-group">
-                      <input name="name" type="text" class="form-control" placeholder="Brand Name">
+                      <input name="name" value="{{ brand.brand_name }}" type="text" class="form-control" placeholder="Brand Name">
                     </div>
                   </div>
                   <button type="submit" class="btn btn-success">Edit</button>
+                  <a href="{{ url_for('brands') }}" class="btn btn-danger">Cancel</a>
                 </form>
               </div>
             </div><!-- End blog comments -->

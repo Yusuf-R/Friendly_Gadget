@@ -15,7 +15,9 @@
   <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="../static/assets/vendor/aos/aos.css" rel="stylesheet">
@@ -25,7 +27,7 @@
   <link href="../static/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="../static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet" />
-<!-- Custom Css file -->
+  <!-- Custom Css File -->
   <link href="../static/assets/css/style.css" rel="stylesheet">
 </head>
 
@@ -54,11 +56,10 @@
       <div class="container">
 
         <ol>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="Admin.html">Admin</a></li>
+          <li><a href="{{ url_for('admin') }}">Admin</a></li>
           <li>Dashboard</li>
         </ol>
-        <h2>Models</h2>
+        <h2>Brands</h2>
 
       </div>
     </section><!-- End Breadcrumbs -->
@@ -68,90 +69,62 @@
       <div class="container" data-aos="fade-up">
 
         <div class="row">
-            <div class="col-lg-4">
+          <div class="col-lg-4">
+            <div class="sidebar">
+              <div class="sidebar-item categories">
+                <ul>
+                  <li><a href="{{ url_for('admin') }}" class="sidebar-title active">Dashboard </a></li>
+                  <hr>
+                  <li><a href="{{ url_for('brands') }}">Brands </a></li>
+                  <hr>
+                  <li><a href="{{ url_for('models') }}">Models </a></li>
+                  <hr>
+                  <li><a href="features.html">Features </a></li>
 
-                <div class="sidebar">
-    
-                 
-    
-                  <div class="sidebar-item categories">
-                    <ul>
-                      <li><a href="Admin.html"  class="sidebar-title " >Dashboard </a></li>
-                      <hr>
-                      <li><a href="Brands.html" >Brands </a></li>
-                      <hr>
-                      <li><a href="Model.html" class="active">Models </a></li>
-                      <hr>
-                      <li><a href="features.html">Features </a></li>
-                    
-                    </ul>
-                  </div><!-- End sidebar categories-->
-    
-                  
-                  </div><!-- End sidebar recent posts-->
-    
-                  
-    
-                </div><!-- End sidebar -->
-    
+                </ul>
+              </div><!-- End sidebar categories-->
+            </div><!-- End sidebar recent posts-->
+          </div><!-- End sidebar -->
           <div class="col-lg-8 entries">
-
-           
-
             <div class="blog-comments">
-
-                <button type="submit" class="btn btn-primary"><a href="addmodel.html" class="text-white">Add Model</a></button>
-
-
+              <a href="{{ url_for('add_brand')}}" class=" btn btn-primary text-white"> Add Brand</a>
               <div class="reply-form">
                 <table class="table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Model Name</th>
-                            <th>Brand Name</th>
-                            <th>Image</th>
-                            <th>actions</th>
-                        </tr>
-                        
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Galaxy S22</td>
-                            <td>Samsung</td>
-                            <td><img src="../static/assets/img/models/samsung galaxy22+.webp" height="50" width="50"></td>
-
-                            <td>
-                                <a href="editmodel.html" class="text-success"><i class="ri-edit-2-fill"></i></a> &nbsp;
-                                <a href="" class="text-danger"><i class="bi-trash   "></i></a>
-
-                            </td>
-                        </tr>
-                    </tbody>
-
-
-
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Brand Name</th>
+                      <th>actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for brand in brands %}
+                    {% set counter = 0 %}
+                    <tr>
+                      <td>{{ loop.index }}</td>
+                      <td>{{brand.get("brand_name")}}</td>
+                      <td>
+                        <a href="{{ url_for('edit_brand', brand_id=brand.id) }}" title="Edit"><i class="ri-edit-2-fill"></i></a>
+                        <!-- <a href="editbrand.html" class="text-success"><i class="ri-edit-2-fill"></i></a> &nbsp; -->
+                        <a href="" class="text-danger"><i class="bi-trash   "></i></a>                        
+                    </td>
+                      {% endfor %}
+                    </tr>
+                  </tbody>
                 </table>
-
               </div>
-
             </div><!-- End blog comments -->
-
           </div><!-- End blog entries list -->
-
-        
-          </div><!-- End blog sidebar -->
-
-        </div>
-
+        </div><!-- End blog sidebar -->
       </div>
     </section><!-- End Blog Single Section -->
 
   </main><!-- End #main -->
 
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="../static/assets/vendor/purecounter/purecounter.js"></script>
@@ -165,6 +138,17 @@
   <!-- Custom Main JS File -->
   <script src="../static/assets/js/main.js"></script>
 
+
+
+  
+    
+
+
+
+
 </body>
+
+
+
 
 </html>
