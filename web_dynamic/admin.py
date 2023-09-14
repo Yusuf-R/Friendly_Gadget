@@ -3,7 +3,7 @@
 
 from models.brand import Brand
 from models.model import Model
-from flask import Flask, abort, render_template, request, flash, json
+from flask import Flask, abort, render_template, request, flash, json, redirect, url_for
 import requests
 from models import storage
 import os
@@ -33,7 +33,7 @@ def admin():
 
 @app.route('/brands', strict_slashes=False)
 def brands():
-    """Brand page."""
+    """Render the Brand page."""
     url = "http://0.0.0.0:5100/api/v1/brands"
     data = requests.get(url)
     if data.status_code == 200:
@@ -42,18 +42,9 @@ def brands():
     else:
         abort(404)
         
-
-@app.route('/models', strict_slashes=False)
-def models():
-    """Brand page."""
-    obj = storage.all(Model).values()
-    return render_template('models.html', obj=obj)
-
-
-
 @app.route('/add_brand', methods=['POST', 'GET'], strict_slashes=False)
 def add_brand():
-    """Create a brand."""
+    """Create a new instance of brand."""
     if request.method == 'GET':
         return render_template('add_brand.html')
     if request.method == 'POST':
@@ -64,34 +55,124 @@ def add_brand():
         response = requests.post(url, headers=headers, json=params)
         if response.status_code == 201:
             flash(f"Brand '{br_name}' successfully added!", 'success')
-            return render_template('add_brand.html')
+            return brands()
         else:
             abort(500)
     else:
         abort(404)
 
 
-# @app.route('/edit_brand/<brand_id>', methods=['PUT'], strict_slashes=False)
-# def edit_brand(brand_id):
-#     """Edit a brand."""
-#     url = "http://0.0.0.0:5100/api/v1/brands/{}".format(brand_id)
-#     header = {'Content-Type': 'application/json'}
-#     data = request.get_json()
-#     print(data)
-#     response = requests.put(url, headers=header, json=data)
-#     if response.status_code == 200:
-#         flash(f"Brand '{data['brand_name']}' successfully edited!", 'success')
-#         return render_template('edit_brand.html')
-#     else:
-#         abort(500)
-
-
 @app.route('/edit_brand/<brand_id>', strict_slashes=False)
 def edit_brand(brand_id):
-    """Edit a brand."""
+    """Render the EditPage to enable editing of the ginven instance."""
     get_brand = storage.get(Brand, brand_id)
     return render_template('edit_brand.html', brand=get_brand)
   
+
+@app.route('/update_brand/<brand_id>', methods=['POST'], strict_slashes=False)
+def update_brand(brand_id):
+    """Editing a brand and send this update to the database using API."""
+    data = request.form.get('name')
+    print("The edit data is: ", data)
+    url = "http://0.0.0.0:5100/api/v1/brands/{}".format(brand_id)
+    headers = {'Content-Type': 'application/json'}
+    params = {'brand_name': data}
+    response = requests.put(url, headers=headers, json=params)
+    print(response.status_code)
+    if response.status_code == 200:
+        flash(f"Brand '{data}' successfully updated!", 'success') 
+        print("Inside the IF")       
+        # return redirect(url_for('add_brand'))
+        return brands()
+    else:
+        abort(500)
+
+
+@app.route('/delete_brand/<brand_id>', methods=['GET'], strict_slashes=False)
+def delete_brand(brand_id):
+    """Delete an object instance of the brand."""
+    url = "http://0.0.0.0:5100/api/v1/brands/{}".format(brand_id)
+    obj = storage.get(Brand, brand_id)
+    response = requests.delete(url)
+    storage.save()
+    if response.status_code == 200:
+        flash(f"Brand '{obj.brand_name }' successfully deleted!", 'success')
+        return brands()
+    else:
+        abort(500)
+
+
+@app.route('/models', strict_slashes=False)
+def models():
+    """Render the Model page."""
+    obj = storage.all(Model).values()
+    return render_template('models.html', obj=obj)
+
+@app.route('/add_model', strict_slashes=False)
+def add_model():
+  """ Render the model page for Adding a new obj insance"""
+  all_brand_obj = storage.all(Brand).values()  
+  return render_template('add_model.html', brands=all_brand_obj)
+
+
+@app.route('/create_model', methods=['POST'], strict_slashes=False)
+def create_model():
+  """Get the properties of this new obj instance of Model create this obj via API"""
+  model_name = request.form['model_name']
+  model_img = request.form['img_url']
+  brand_id = request.form['brand']  
+  url = "http://0.0.0.0:5100/api/v1/brands/{}/models".format(brand_id)
+  headers = {'Content-Type': 'application/json'}
+  params = {'model_name': model_name, 'model_img': model_img}
+  response = requests.post(url, headers=headers, json=params)
+  if response.status_code == 201:
+    flash(f"Model '{model_name}' successfully added!", 'success')
+    return models()
+  else:
+    abort(500)
+
+
+
+@app.route('/edit_model/<model_id>', strict_slashes=False)
+def edit_model(model_id):
+  """Render the edit page with necessary information to Edit a model."""
+  get_model = storage.get(Model, model_id)
+  return render_template('edit_model.html', model=get_model)
+
+
+@app.route('/update_model/<model_id>', methods=['POST'], strict_slashes=False)
+def update_model(model_id):
+  """Edit a model and send this update to the database using API."""
+  model_name = request.form['model_name']
+  model_img = request.form['img_url']
+  data = {'model_name': model_name, 'model_img': model_img}
+  url = "http://0.0.0.0:5100/api/v1/models/{}".format(model_id)
+  headers = {'Content-Type': 'application/json'}
+  params = {'model_name': model_name, 'model_img': model_img}
+  response = requests.put(url, headers=headers, json=params)
+  print(response.status_code)
+  if response.status_code == 200:
+    flash(f"Model '{model_name}' successfully updated!", 'success')       
+    # return redirect(url_for('add_brand'))
+    return models()
+  else:
+    abort(500)
+
+  
+@app.route('/delete_model/<model_id>', methods=['GET'], strict_slashes=False)
+def delete_model(model_id):
+  """Delete a model."""
+  url = "http://0.0.0.0:5100/api/v1/models/{}".format(model_id)
+  obj = storage.get(Model, model_id)
+  response = requests.delete(url)
+  storage.save()
+  if response.status_code == 200:
+    flash(f"Model '{obj.model_name }' successfully deleted!", 'success')
+    return models()
+  else:
+    abort(500)
+
+
   
 
 if __name__ == '__main__':

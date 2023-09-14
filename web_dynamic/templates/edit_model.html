@@ -75,11 +75,11 @@
 
                             <div class="sidebar-item categories">
                                 <ul>
-                                    <li><a href="Admin.html" class="sidebar-title ">Dashboard </a></li>
+                                    <li><a href="{{ url_for('admin') }}" class="sidebar-title ">Dashboard </a></li>
                                     <hr>
-                                    <li><a href="Brands.html">Brands </a></li>
+                                    <li><a href="{{ url_for('brands') }}">Brands </a></li>
                                     <hr>
-                                    <li><a href="Model.html" class="active">Models </a></li>
+                                    <li><a href="{{ url_for('models') }}" class="active">Models </a></li>
                                     <hr>
                                     <li><a href="features.html">Features </a></li>
 
@@ -92,33 +92,42 @@
                         <div class="blog-comments">
                             <div class="reply-form">
                                 <h4>Edit Model</h4>
-                                <form action="">
+
+                                <form action="/update_model/{{model.id}}" method="POST">
                                     <!-- form to Edit Model -->
+                                    
                                     <div class="row">
+                       
+                                
                                         <div class="col-md-6 form-group">
-                                            <select name="category" class="form-select"
-                                                aria-label="Default select example">
-                                                <option selected disabled>Select your Brand</option>
-
-                                                <option>Samsung</option>
-                                                <option>Huawie</option>
-                                                <option>Apple</option>
-                                            </select>
-
+                                          <input name="brand" type="text" class="form-control"
+                                                placeholder="" disabled value="{{ model.brands.brand_name }}">
                                         </div>
+
+                                     
                                         <div class="col-md-6 form-group">
-                                            <input name="model" type="text" class="form-control"
-                                                placeholder="Your Models*">
+                                            <input name="model_name" type="text" class="form-control"
+                                                placeholder="" value="{{ model.model_name }}">
                                         </div>
+
                                     </div>
                                     <div class="row">
-                                        <div class="col form-group">
-                                            <input name="image" type="file" class="form-control" placeholder="">
+
+                                        <div class="col-md-6 form-group">
+                                            <input name="img_url" type="text" class="form-control" placeholder="" value="{{ model.model_img }}">
                                         </div>
+
+                                        <div class="col-md-2 form-group">
+                                          <img src="{{ model.model_img }}" name="image" type="text" class="form-control" height="100">
+                                      </div>                                     
+
+
                                     </div>
 
                                     <button type="submit" class="btn btn-success">Edit</button>
+                                    <button type="submit" class="btn btn-danger">Cancel</button>
                                 </form>
+
                             </div>
                         </div><!-- End blog comments -->
                     </div><!-- End blog entries list -->

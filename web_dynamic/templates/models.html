@@ -99,12 +99,21 @@
 
             <div class="blog-comments">
 
-                <button type="submit" class="btn btn-primary"><a href="addmodel.html" class="text-white">Add Model</a></button>
-
+                <button type="submit" class="btn btn-primary"><a href="{{ url_for('add_model') }}" class="text-white">Add Model</a></button>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                  <div class="alert">
+                    {% for category, message in messages %}
+                      <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              {% endwith %}
 
               <div class="reply-form">
                 <table class="table">
                     <thead>
+
                         <tr>
                             <th>#</th>
                             <th>Model Name</th>
@@ -124,8 +133,9 @@
                             <td><img src={{model.model_img}} height="50" width="50"></td>
 
                             <td>
-                                <a href="editmodel.html" class="text-success"><i class="ri-edit-2-fill"></i></a> &nbsp;
-                                <a href="" class="text-danger"><i class="bi-trash   "></i></a>
+                              
+                                <a href="{{ url_for('edit_model', model_id=model.id) }}"class="text-success"><i class="ri-edit-2-fill"></i></a> &nbsp;
+                                <a href="{{ url_for('delete_model', model_id=model.id) }}" class="text-danger"><i class="bi-trash   "></i></a>
 
                             </td>
                         </tr>

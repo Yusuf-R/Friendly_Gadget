@@ -146,4 +146,6 @@ from models import storage
 
 
 m = storage.get(Model, "ef39645b-212e-4a8b-b34e-1d491ad4ae62")
-print(m)
+print(m.brands.brand_name)
+# for n in m:
+#   print(n.model_name)
