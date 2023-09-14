@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 """The blueprint for all CRUD operation for Brand."""
+from ast import mod
+
+from sqlalchemy.sql.functions import mode
+from models import brand
 from models.brand import Brand
 from models.model import Model
 from flask import Flask, render_template, request, jsonify
@@ -57,6 +61,21 @@ def result():
     obj_ids = request.args.getlist('model_id')
     obj_list = [storage.get(Model, obj_id) for obj_id in obj_ids]
     return render_template('result.html', result=obj_list)
+
+
+@app.route('/admin', strict_slashes=False)
+def admin():
+    """Admin page."""
+    br_cnt = storage.count(Brand)
+    mo_cnt = storage.count(Model)
+    return render_template('admin.html',
+                           brand_count=br_cnt,
+                           model_count=mo_cnt
+                           )
+
+def brand():
+    """Brand page."""
+    return render_template('brand.html')
 
 
 if __name__ == '__main__':
