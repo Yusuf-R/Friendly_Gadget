@@ -32,10 +32,20 @@ def delete_match(cls, id):
 def create_new(p_cls, ch_cls, p_id, kwargs):
     """POST: creating a new object for the class"""
     if p_cls == Brand and ch_cls is None:
+        # validate if the current content exists
+        all_obj = storage.all(p_cls).values()
+        for obj in all_obj:
+            if obj.brand_name == kwargs["brand_name"]:
+                abort(409, description="Object instance already exists")
         obj = p_cls(**kwargs)
         obj.save()
         return jsonify(obj.to_dict()), 201
     if p_cls == Brand and ch_cls == Model:
+        # validate if the model object already exists
+        all_obj = storage.all(ch_cls).values()
+        for obj in all_obj:
+            if obj.model_name == kwargs["model_name"]:
+                abort(409, description="Object instance already exists")        
         kwargs["brand_id"] = p_id
         obj = ch_cls(**kwargs)
         obj.save()
@@ -53,12 +63,16 @@ def create_new(p_cls, ch_cls, p_id, kwargs):
                     s_cls.save()
         return jsonify(obj.to_dict()), 201
     if p_cls == Model and ch_cls == Summary:
-        kwargs["model_id"] = p_id
-        obj = ch_cls(**kwargs)
-        obj.save()
-        return jsonify(obj.to_dict()), 201
+      all_obj = storage.all(ch_cls).values()
+      for obj in all_obj:
+        if obj.model_id == p_id:
+          abort(409, description="Object instance already exists")
+      kwargs["model_id"] = p_id
+      obj = ch_cls(**kwargs)
+      obj.save()
+      return jsonify(obj.to_dict()), 201
     else:
-        abort(404)
+      abort(404)
 
 
 def update_match(obj, kwargs):

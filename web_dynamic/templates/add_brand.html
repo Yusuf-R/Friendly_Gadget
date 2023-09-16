@@ -83,7 +83,7 @@
                   <hr>
                   <li><a href="{{ url_for('models') }}">Models </a></li>
                   <hr>
-                  <li><a href="features.html">Features </a></li>
+                  <li><a href="{{ url_for('summaries') }}">Summaries </a></li>
 
                 </ul>
               </div><!-- End sidebar categories-->
@@ -92,7 +92,17 @@
 
           <div class="col-lg-8 entries">
             <div class="blog-comments">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <div class="alert">
+                  {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
               <div class="reply-form">
+
                 <h4>Add New Brand</h4>
                 <p class="text-danger"> Required fields are marked * </p>
                 <!-- Form to add new Brand -->

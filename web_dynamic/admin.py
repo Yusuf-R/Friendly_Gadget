@@ -2,8 +2,10 @@
 """The blueprint for all CRUD operation for Brand."""
 
 from models.brand import Brand
+import json
 from models.model import Model
-from flask import Flask, abort, render_template, request, flash, json, redirect, url_for
+from models.summary import Summary
+from flask import Flask, abort, render_template, request, flash, jsonify, redirect, url_for
 import requests
 from models import storage
 import os
@@ -57,7 +59,8 @@ def add_brand():
             flash(f"Brand '{br_name}' successfully added!", 'success')
             return brands()
         else:
-            abort(500)
+            flash(f"Brand '{br_name}' already exists!", 'danger')
+            return render_template('add_brand.html')
     else:
         abort(404)
 
@@ -129,8 +132,8 @@ def create_model():
     flash(f"Model '{model_name}' successfully added!", 'success')
     return models()
   else:
-    abort(500)
-
+    flash(f"Model '{model_name}' already exists!", 'danger')
+    return models()
 
 
 @app.route('/edit_model/<model_id>', strict_slashes=False)
@@ -173,7 +176,55 @@ def delete_model(model_id):
     abort(500)
 
 
+@app.route('/summaries', strict_slashes=False)
+def summaries():
+    """Render the Summary page."""
+    obj = storage.all(Model).values()
+    return render_template('summaries.html', obj=obj)
+
+@app.route('/view_summary/<model_id>', methods=['GET'], strict_slashes=False)
+def view_summary(model_id):
+  """Renders the view summary of a particular model object"""
+  obj = storage.get(Model, model_id)
+  return render_template('view_summary.html', models=obj)
+
+
+@app.route('/add_summary/<model_id>', methods=['GET'], strict_slashes=False)
+def add_summary(model_id):
+  """Renders the add summary page for a particular model object"""
+  obj = storage.get(Model, model_id)
+  return render_template('add_summary.html', models=obj)
+
+
+@app.route('/create_summary/<model_id>', methods=['POST'], strict_slashes=False)
+def create_summary(model_id):
+  """Gets the properties of this new obj instance of Summary and sends this to the API to create this obj instance"""  
+  data = request.form.get('summaryData')
+  url = "http://0.0.0.0:5100/api/v1/models/{}/summaries".format(model_id)
+  obj = storage.get(Model, model_id)
+  if obj is None:
+    abort("invalid model id"), 400
+  headers = {'Content-Type': 'application/json'}
+  # convert data to JSON
+  data = eval(data)
+  if type(data) != dict:
+    abort("Data must be in JSON format"), 400
+  response = requests.post(url, headers=headers, json=data)
+  if response.status_code == 201:
+    flash(f"Summary for model '{obj.model_name}' successfully added!", 'success')
+    return summaries()
+  else:
+    flash(f"Summary for model '{obj.model_name}' already exists!", 'danger')
+    return summaries()
   
+
+@app.route('/edit_summary/<model_id>', strict_slashes=False)
+def edit_summary(model_id):
+  """Render the edit page with necessary information to Edit a summary."""
+  obj = storage.get(Model, model_id)
+  return render_template('edit_summary.html', models=obj)
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5200, debug=True)

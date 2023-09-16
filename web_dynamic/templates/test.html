@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <input type="text" class="form-control" value="{{ models.model_name }}" readonly>
+        </div>
+        <div class="col-md-6 form-group">
+            <select class="form-select" id="itemSelect">
+                <option selected disabled>Set Key Specifications</option>
+                <option value="Gaming">Gaming</option>
+                <option value="Photography">Photography</option>
+                <option value="SocialMedia">Social Media</option>
+                <option value="Publishing">Publishing</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Multimedia">Multimedia</option>
+                <option value="Basic">Basic</option>
+                <option value="Release">Release</option>
+                <option value="Memory">Memory</option>
+                <option value="Camera">Camera</option>
+                <option value="Screen">Screen</option>
+                <option value="Storage">Storage</option>
+                <option value="Battery">Battery</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <select class="form-select" id="subItemSelect">
+                <option selected disabled>Select Specific Purpose</option>
+            </select>
+            <input type="text" class="form-control" placeholder="Value" style="display: none;" id="customSubItemInput">
+        </div>
+        <div class="col-md-3 form-group">
+            <button type="button" class="btn btn-primary" onclick="addSelection()">Add Selection</button>
+        </div>
+        <div class="col-md-3 form-group">
+            <div id="currentSelectionContainer" class="bg-light"></div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6 form-group">
+            <input type="submit" onclick="search()" class="btn btn-primary" value="Submit">
+        </div>
+    </div>
+
+    <script>
+        
+
+
+        
+    </script>
+
+
+        
+      
+</body>
+
+</html>

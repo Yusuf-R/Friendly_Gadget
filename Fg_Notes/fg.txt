@@ -95,3 +95,8 @@ curl -X POST http://0.0.0.0:5100/api/v1/models/ef628327-5e01-4fb0-960a-219148b9d
 
 
     </section>
+
+
+
+
+curl -X POST http://0.0.0.0:5100/api/v1/brands -H "Content-Type: application/json" -d '{"brand_name": "Razor"}'
