@@ -15,7 +15,9 @@
   <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="../static/assets/vendor/aos/aos.css" rel="stylesheet">
@@ -25,42 +27,43 @@
   <link href="../static/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="../static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.min.css" rel="stylesheet" />
-<!-- Custom Css file -->
+  <!-- Custom Css file -->
   <link href="../static/assets/css/style.css" rel="stylesheet">
 </head>
 
 <body>
 
-  <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top">
-    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+ <!-- ======= Header ======= -->
+ <header id="header" class="header fixed-top">
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="../static/assets/img/logo.png" alt="">
-        <span>Friendly Gadget</span>
-      </a>
+    <a href="index.html" class="logo d-flex align-items-center">
+      <img src="../static/assets/img/logo.png" alt="">
+      <span>Friendly Gadget</span>
+    </a>
 
-      <nav id="navbar" class="navbar">
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
+    <nav id="navbar" class="navbar">
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
 
-    </div>
-  </header><!-- End Header -->
+  </div>
+</header><!-- End Header -->
 
   <main id="main">
 
-    <!-- ======= Breadcrumbs ======= -->
-    <section class="breadcrumbs">
+     <!-- ======= Breadcrumbs ======= -->
+     <section class="breadcrumbs">
       <div class="container">
 
         <ol>
           <li><a href="{{ url_for('admin') }}">Admin</a></li>
-          <li>Dashboard</li>
+          <li>Summaries</li>
         </ol>
-        <h2>Models</h2>
+        <h2>Summaries</h2>
 
       </div>
     </section><!-- End Breadcrumbs -->
+
 
     <!-- ======= Blog Single Section ======= -->
     <section id="blog" class="blog">
@@ -75,13 +78,13 @@
     
                   <div class="sidebar-item categories">
                     <ul>
-                      <li><a href="{{ url_for('admin') }}"  class="sidebar-title " >Dashboard </a></li>
+                      <li><a href="{{ url_for('admin') }}">Dashboard </a></li>
                       <hr>
                       <li><a href="{{ url_for('brands') }}" >Brands </a></li>
                       <hr>
                       <li><a href="{{ url_for('models') }}" class="active">Models </a></li>
                       <hr>
-                      <li><a href="{{ url_for('summaries') }}">Summaries </a></li>
+                      <li><a href="{{ url_for('summaries') }}" class="sidebar-title active">Summaries </a></li>
                     
                     </ul>
                   </div><!-- End sidebar categories-->
