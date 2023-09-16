@@ -145,7 +145,8 @@ from models import storage
 
 
 
-m = storage.get(Model, "ef39645b-212e-4a8b-b34e-1d491ad4ae62")
-print(m.brands.brand_name)
+summary_id = [obj.id for obj in storage.get(Model, "ef39645b-212e-4a8b-b34e-1d491ad4ae62").summaries][0]
+print((summary_id))
+
 # for n in m:
 #   print(n.model_name)

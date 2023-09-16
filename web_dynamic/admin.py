@@ -225,6 +225,30 @@ def edit_summary(model_id):
   return render_template('edit_summary.html', models=obj)
 
 
+@app.route('/update_summary/<model_id>', methods=['POST'], strict_slashes=False)
+def update_summary(model_id):
+  """Implement the necessary update on an obj base on the dicinoary of data."""
+  data = request.form.get('summaryData')
+  summary_id = [obj.id for obj in storage.get(Model, model_id).summaries][0]
+  url = "http://0.0.0.0:5100/api/v1/summaries/{}".format(summary_id)
+  obj = storage.get(Model, model_id)
+  if obj is None:
+    abort("invalid model id"), 400
+  headers = {'Content-Type': 'application/json'}
+  # convert data to JSON
+  data = eval(data)
+  if type(data) != dict:
+    abort("Data must be in JSON format"), 400
+  response = requests.put(url, headers=headers, json=data)
+  if response.status_code == 200:
+    flash(f"Summary for model '{obj.model_name}' successfully updated!", 'success')
+    return summaries()
+  else:
+    abort(500)
+
+
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5200, debug=True)

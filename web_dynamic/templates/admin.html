@@ -97,14 +97,15 @@
                       <div class="flexbox">
                         <div class="flexcard flexcardGreen">
                           <div class="flexcardNumber flexcardNumberGreen">01</div>
-                          <div class="flex flexcardTitle">Brands</div>
+                          <div class="flex flexcardTitle"><a href="{{ url_for('brands') }}" class="text-danger">Brands</a></div>
                           <div class="flex flexcardText">
                             <span><i class="bi-graph-up-arrow"></i>&nbsp;<h4>{{brand_count}}</h4></span>
                           </div>
                         </div>
                         <div class="flexcard flexcardBlue">
                           <div class="flexcardNumber flexcardNumberBlue">02</div>
-                          <div class="flex flexcardTitle">Models</div>
+
+                          <div class="flex flexcardTitle"> <a href="{{ url_for('models') }}" class="text-primary">Models</a></div>
                           <div class="flex flexcardText">
                             <span><i class="bi-graph-up-arrow"></i>&nbsp;<h4>{{model_count}}</h4></span>
                           </div>

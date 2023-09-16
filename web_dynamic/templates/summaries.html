@@ -82,7 +82,7 @@
                       <hr>
                       <li><a href="{{ url_for('brands') }}" >Brands </a></li>
                       <hr>
-                      <li><a href="{{ url_for('models') }}" class="active">Models </a></li>
+                      <li><a href="{{ url_for('models') }}" >Models </a></li>
                       <hr>
                       <li><a href="{{ url_for('summaries') }}" class="sidebar-title active">Summaries </a></li>
                     
@@ -137,10 +137,12 @@
                             <td>
                               
                                 
-                                <a href="{{ url_for('view_summary', model_id=model.id) }}" class="text-secondary" title="View Details"><i class="bi-eye-fill"></i></a> &nbsp;
+                                <a href="{{ url_for('add_summary', model_id=model.id) }}" class="text-primary" title="Add Summary"><i class="bi-plus-circle"></i></a> &nbsp;  
                                 <a href="{{ url_for('edit_summary', model_id=model.id) }}" title="Edit"    class="text-success"><i class="ri-edit-2-fill"></i></a> &nbsp;
-                                <a href="{{ url_for('add_summary', model_id=model.id) }}" class="text-primary" title="Add Summary"><i class="bi-plus-circle"></i></a> &nbsp;
-                                <a href="{{ url_for('delete_model', model_id=model.id) }}" title="Delete" class="text-danger"><i class="bi-trash   "></i></a>
+                                <a href="{{ url_for('view_summary', model_id=model.id) }}" class="text-secondary" title="View Details"><i class="bi-eye-fill"></i></a> &nbsp;
+                                
+                                
+                                
 
                             </td>
                         </tr>
