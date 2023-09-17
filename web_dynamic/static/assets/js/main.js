@@ -441,9 +441,33 @@ function sendToBackend(searchDict) {
       console.log(data);
       var queryString = data.map((obj) => `model_id=${obj.model_id}`).join("&");
       window.location.href = `/result?${queryString}`;
+<<<<<<< HEAD
     })
     .catch((error) => {
       console.error("Error:", error);
     });
   console.log("Data to be sent to backend:", searchDict);
 }
+=======
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+  console.log('Data to be sent to backend:', searchDict);
+}
+
+// slider
+
+var mySwiper = new Swiper(".swiper-container", {
+  direction: "vertical",
+  loop: true,
+  pagination: ".swiper-pagination",
+  grabCursor: true,
+  speed: 1000,
+  paginationClickable: true,
+  parallax: true,
+  autoplay: false,
+  effect: "slide",
+  mousewheelControl: 1
+});
+>>>>>>> ec5e08829379cd3211371b59c79472c1ce34ed61
