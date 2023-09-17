@@ -6,7 +6,7 @@
  USE `fg_db`;
 
 -- reduce pasword policy to low
-SET GLOBAL validate_password.policy=LOW;
+-- SET GLOBAL validate_password.policy=LOW;
 
 -- add new user and set a password
 CREATE USER IF NOT EXISTS 'fg_dev'@'localhost' IDENTIFIED BY 'fg_dev_pwd';
