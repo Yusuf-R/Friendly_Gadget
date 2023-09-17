@@ -19,8 +19,8 @@ def teardown_db(exception):
     storage.close()
 
 
-@app.route('/', strict_slashes=False)
-@app.route('/home', strict_slashes=False)
+# @app.route('/', strict_slashes=False)
+@app.route('/friendlygadget', strict_slashes=False)
 # @app.route('/friendly_gadget', strict_slashes=False)
 def index():
     """The homepage of the application."""

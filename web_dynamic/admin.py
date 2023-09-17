@@ -36,7 +36,7 @@ def admin():
 @app.route('/brands', strict_slashes=False)
 def brands():
     """Render the Brand page."""
-    url = "http://0.0.0.0:5100/api/v1/brands"
+    url = "http://0.0.0.0:5801/api/v1/brands"
     data = requests.get(url)
     if data.status_code == 200:
         brands = data.json()
@@ -51,7 +51,7 @@ def add_brand():
         return render_template('add_brand.html')
     if request.method == 'POST':
         br_name = request.form.get('name')
-        url = "http://0.0.0.0:5100/api/v1/brands"
+        url = "http://0.0.0.0:5801/api/v1/brands"
         headers = {'Content-Type': 'application/json'}
         params = {'brand_name': br_name}
         response = requests.post(url, headers=headers, json=params)
@@ -77,7 +77,7 @@ def update_brand(brand_id):
     """Editing a brand and send this update to the database using API."""
     data = request.form.get('name')
     print("The edit data is: ", data)
-    url = "http://0.0.0.0:5100/api/v1/brands/{}".format(brand_id)
+    url = "http://0.0.0.0:5801/api/v1/brands/{}".format(brand_id)
     headers = {'Content-Type': 'application/json'}
     params = {'brand_name': data}
     response = requests.put(url, headers=headers, json=params)
@@ -94,7 +94,7 @@ def update_brand(brand_id):
 @app.route('/delete_brand/<brand_id>', methods=['GET'], strict_slashes=False)
 def delete_brand(brand_id):
     """Delete an object instance of the brand."""
-    url = "http://0.0.0.0:5100/api/v1/brands/{}".format(brand_id)
+    url = "http://0.0.0.0:5801/api/v1/brands/{}".format(brand_id)
     obj = storage.get(Brand, brand_id)
     response = requests.delete(url)
     storage.save()
@@ -124,7 +124,7 @@ def create_model():
   model_name = request.form['model_name']
   model_img = request.form['img_url']
   brand_id = request.form['brand']  
-  url = "http://0.0.0.0:5100/api/v1/brands/{}/models".format(brand_id)
+  url = "http://0.0.0.0:5801/api/v1/brands/{}/models".format(brand_id)
   headers = {'Content-Type': 'application/json'}
   params = {'model_name': model_name, 'model_img': model_img}
   response = requests.post(url, headers=headers, json=params)
@@ -149,7 +149,7 @@ def update_model(model_id):
   model_name = request.form['model_name']
   model_img = request.form['img_url']
   data = {'model_name': model_name, 'model_img': model_img}
-  url = "http://0.0.0.0:5100/api/v1/models/{}".format(model_id)
+  url = "http://0.0.0.0:5801/api/v1/models/{}".format(model_id)
   headers = {'Content-Type': 'application/json'}
   params = {'model_name': model_name, 'model_img': model_img}
   response = requests.put(url, headers=headers, json=params)
@@ -165,7 +165,7 @@ def update_model(model_id):
 @app.route('/delete_model/<model_id>', methods=['GET'], strict_slashes=False)
 def delete_model(model_id):
   """Delete a model."""
-  url = "http://0.0.0.0:5100/api/v1/models/{}".format(model_id)
+  url = "http://0.0.0.0:5801/api/v1/models/{}".format(model_id)
   obj = storage.get(Model, model_id)
   response = requests.delete(url)
   storage.save()
@@ -200,7 +200,7 @@ def add_summary(model_id):
 def create_summary(model_id):
   """Gets the properties of this new obj instance of Summary and sends this to the API to create this obj instance"""  
   data = request.form.get('summaryData')
-  url = "http://0.0.0.0:5100/api/v1/models/{}/summaries".format(model_id)
+  url = "http://0.0.0.0:5801/api/v1/models/{}/summaries".format(model_id)
   obj = storage.get(Model, model_id)
   if obj is None:
     abort("invalid model id"), 400
@@ -230,7 +230,7 @@ def update_summary(model_id):
   """Implement the necessary update on an obj base on the dicinoary of data."""
   data = request.form.get('summaryData')
   summary_id = [obj.id for obj in storage.get(Model, model_id).summaries][0]
-  url = "http://0.0.0.0:5100/api/v1/summaries/{}".format(summary_id)
+  url = "http://0.0.0.0:5801/api/v1/summaries/{}".format(summary_id)
   obj = storage.get(Model, model_id)
   if obj is None:
     abort("invalid model id"), 400
