@@ -88,11 +88,11 @@
 
                   <!-- Tabs -->
                   <ul class="nav nav-pills mb-3">
-                    <!-- <li>
-                      <a class="nav-link active" data-bs-toggle="pill" href="#tab1"> Over View</a>
-                    </li> -->
                     <li>
-                      <a class="nav-link active" data-bs-toggle="pill" href="#tab2">Specification</a>
+                      <a class="nav-link active" data-bs-toggle="pill" href="#tab1"> Specification</a>
+                    </li>
+                    <li>
+                      <!-- <a class="nav-link active" data-bs-toggle="pill" href="#tab2">Specification</a> -->
                     </li>
                     <li>
                       <a class="nav-link" data-bs-toggle="pill" href="#tab3">Image Gallary</a>
@@ -102,25 +102,7 @@
                   <!-- Tab Content -->
                   <div class="tab-content">
 
-                    <!-- <div class="tab-pane fade show active" id="tab1">
-
-                      <div class="d-flex align-items-center mb-2">
-                        <i class="bi bi-check2"></i>
-                        <h4>Repudiandae rerum velit modi et officia quasi facilis</h4>
-                      </div>
-                      <p>Laborum omnis voluptates voluptas qui sit aliquam blanditiis. Sapiente minima commodi dolorum
-                        non eveniet magni quaerat nemo et.</p>
-                      <div class="d-flex align-items-center mb-2">
-                        <i class="bi bi-check2"></i>
-                        <h4>Incidunt non veritatis illum ea ut nisi</h4>
-                      </div>
-                      <p>Non quod totam minus repellendus autem sint velit. Rerum debitis facere soluta tenetur. Iure
-                        molestiae assumenda sunt qui inventore eligendi voluptates nisi at. Dolorem quo tempora. Quia et
-                        perferendis.</p>
-                    </div> -->
-                    <!-- End Tab 1 Content -->
-
-                    <div class="tab-pane fade show" id="tab2">
+                    <div class="tab-pane fade show active" id="tab1">
 
                       <div class="sidebar">
                         <h2 class="sidebar-title">Features</h2>
@@ -157,8 +139,49 @@
 
 
                       </div><!-- End sidebar -->
+                    </div>
+                    <!-- End Tab 1 Content -->
+<!-- 
+                    <div class="tab-pane fade show" id="tab2">
 
-                    </div><!-- End Tab 2 Content -->
+                      <div class="sidebar">
+                        <h2 class="sidebar-title">Features</h2>
+
+                        <div class="sidebar-item categories">
+                          <table class="table">
+                            {% for f in model.features %}
+                            {% for k, v in f.to_dict().items() %}
+                            <tr>
+                              {% if k not in ["id", "__class__", "model_id"]: %}
+                              <th class="text-danger">{{k}}</th>
+                              <td>
+                                <table class="table" style="width:100%">
+                                  {% for key, val in v.items() %}
+                                  <tr>
+                                    <th class="text-primary">{{key}}</th>
+                                    <td>{{val}}</td>
+                                  </tr>
+                                  {% endfor %}                                  
+                                </table>
+                              </td>
+                              {% endif %}
+                            </tr>
+                            {% endfor %}
+                            {% endfor %}
+
+                          </table>
+                          
+                        </div>
+
+
+                   
+
+
+
+                      </div>
+                      
+
+                    </div> -->
 
                     <div class="tab-pane fade show" id="tab3">
 
@@ -241,20 +264,26 @@
 </footer><!-- End Footer -->
 
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  <!-- Vendor JS Files -->
-  <script src="../static/assets/vendor/purecounter/purecounter.js"></script>
-  <script src="../static/assets/vendor/aos/aos.js"></script>
-  <script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../static/assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="../static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="../static/assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="../static/assets/vendor/php-email-form/validate.js"></script>
+<!-- Vendor JS Files -->
+<script src="../static/assets/vendor/purecounter/purecounter.js"></script>
+<script src="../static/assets/vendor/aos/aos.js"></script>
+<script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../static/assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="../static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+<script src="../static/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="../static/assets/vendor/php-email-form/validate.js"></script>
 
-  <!-- Custom Main JS File -->
-  <script src="../static/assets/js/main.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+<!-- Custom Main JS File -->
+<script src="../static/assets/js/main.js"></script>
+<script>
+$(".chosen-select").chosen({
+    no_results_text: "Oops, nothing found!"
+  });
+</script>
 
 </body>
 
