@@ -458,7 +458,7 @@ var mySwiper = new Swiper(".swiper-container", {
   speed: 1000,
   paginationClickable: true,
   parallax: true,
-  autoplay: false,
+  autoplay: true,
   effect: "slide",
   mousewheelControl: 1
 });
