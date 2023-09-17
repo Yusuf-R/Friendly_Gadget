@@ -300,10 +300,10 @@ document.addEventListener('DOMContentLoaded', function () {
           'Gaming': ['LowEnd', 'HighEnd'],
           'Photography': ['Low', 'Medium', 'High'],
           'Publishing': ['Good', 'Better', 'Excellent'],
-          'SocialMedia': ['Optimal'],
-          'Marketing': ['Optimal'],
-          'Multimedia': ['Optimal'],
-          'Basic': ['Optimal']
+          'SocialMedia': ['Average', 'Optimal', 'Excellent'],
+          'Marketing': ['Average', 'Optimal', 'Excellent'],
+          'Multimedia': ['Average', 'Optimal', 'Excellent'],
+          'Basic': ['Average', 'Optimal', 'Excellent']
       };
 
       if (predefinedOptions[selectedItem]) {
