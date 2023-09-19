@@ -28,8 +28,8 @@ class Mobile:
                 if k == "__class__":
                     continue
                 setattr(self, k, v)
-            else:
-                self.id = str(uuid.uuid4())
+        else:
+            self.id = str(uuid.uuid4())
 
     def __str__(self):
         """String representation of the class"""
